@@ -8,9 +8,10 @@
         <version>3.4.5</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.ynov.javaformation</groupId>
+    <groupId>com.ynov.javaformation.narraty</groupId>
     <artifactId>narraty</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>Narraty</name>
     <description>Le livre dont vous êtes le héros</description>
 
@@ -23,5 +24,13 @@
     <properties>
         <java.version>17</java.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
 
 </project>
