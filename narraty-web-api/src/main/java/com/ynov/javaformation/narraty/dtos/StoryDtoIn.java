@@ -1,11 +1,11 @@
 package com.ynov.javaformation.narraty.dtos;
 
 import com.ynov.javaformation.narraty.models.Story;
-import lombok.AllArgsConstructor;
+import lombok.Data;
 
 import java.util.UUID;
 
-@AllArgsConstructor
+@Data
 public class StoryDtoIn {
 
     String ttl;
