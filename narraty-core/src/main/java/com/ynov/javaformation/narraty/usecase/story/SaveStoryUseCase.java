@@ -8,7 +8,13 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 
 @Service
-public record SaveStoryUseCase(StoryDao repository) implements IUseCase<Story, Story> {
+public class SaveStoryUseCase implements IUseCase<Story, Story> {
+
+    private final StoryDao repository;
+
+    public SaveStoryUseCase(StoryDao repository) {
+        this.repository = repository;
+    }
 
     public Story handle(Story story) throws Exception {
 
