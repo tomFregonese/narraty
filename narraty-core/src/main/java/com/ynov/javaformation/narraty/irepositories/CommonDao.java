@@ -5,9 +5,9 @@ import java.util.Optional;
 
 public interface CommonDao<T, ID> {
 
-    T save(T entity);
+    T save(T session);
 
-    T delete(T entity);
+    T delete(T session);
 
     Optional<T> findById(ID id);
 

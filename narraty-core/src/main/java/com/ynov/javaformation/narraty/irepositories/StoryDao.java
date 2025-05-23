@@ -8,9 +8,9 @@ import java.util.UUID;
 
 public interface StoryDao {
 
-    Story save(Story entity);
+    Story save(Story story);
 
-    void delete(Story entity);
+    void delete(Story story);
 
     Optional<Story> findById(UUID id);
 
