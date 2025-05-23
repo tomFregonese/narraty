@@ -1,43 +1,38 @@
 package com.ynov.javaformation.narraty.sessions;
 
+import com.ynov.javaformation.narraty.models.User;
+
 import java.util.UUID;
 
 public interface ISessionService {
 
     /**
-     * Logs in the user with the specified user ID.
-     * <p>
-     * This action should establish a persistent session for the user, allowing
-     * subsequent calls to {@link #getCurrentUserId()} to identify them.
-     * </p>
+     * Saves a new session to the database and returns the token.
      *
-     * @param userId The unique identifier of the user to log in. Must not be null.
-     * @throws IllegalArgumentException if userId is null.
-     * @throws IllegalStateException if the login operation cannot be performed due to
-     * an underlying system issue (e.g., session mechanism unavailable).
+     * @param user The user for whom the session is created.
+     * @return UUID Token
      */
-    void login(UUID userId);
+    UUID createSession(User user);
 
     /**
-     * Logs out the currently authenticated user.
-     * <p>
-     * This action should terminate the user's current session, effectively
-     * removing their authenticated state from the application.
-     * </p>
-     *
-     * @throws IllegalStateException if the logout operation cannot be performed (e.g.,
-     * no active session to terminate or an issue with the underlying session mechanism).
+     * Checks if the token is valid.
+     * @param token Takes a Bearer token as param
+     * @return The User if token is valid, Null otherwise.
      */
-    void logout();
+    User validateToken(String token);
 
     /**
-     * Retrieves the unique identifier of the currently authenticated user.
+     * Deletes a session from the database.
      *
-     * @return The {@link UUID} of the currently logged-in user.
-     * @throws IllegalStateException if no user is currently authenticated or if the
-     * user's identifier cannot be retrieved (e.g., no active session, or session
-     * does not contain valid user information).
+     * @param token The token of the session to delete.
      */
-    UUID getCurrentUserId();
+    void deleteSession(UUID token);
+
+    /**
+     * Deletes all sessions of a user from the database.
+     *
+     * @param userId The ID of the user whose sessions are to be deleted.
+     */
+    void deleteAllSessionsOfAUser(UUID userId);
 
 }
