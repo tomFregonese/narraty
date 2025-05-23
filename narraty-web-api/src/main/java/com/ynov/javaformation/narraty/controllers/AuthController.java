@@ -29,8 +29,17 @@ public class AuthController {
             UUID sessionId = signUpUseCase.handle(credentials);
             return ResponseEntity.status(HttpStatus.CREATED).body(sessionId);
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            switch (e.getClass().getSimpleName()) {
+                case "UsernameAlreadyExistException"://TODO I'm blocked to detect the kind of exception
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body(null);//TODO I'm blocked to add a message cuz it's not a UUID.
+                case "EmailAlreadyExistsException":
+                    return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
+                case "PasswordDoesNotMeetRequirementException":
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                default:
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
         }
     }
 
