@@ -53,7 +53,7 @@ public class SessionService implements ISessionService {
     }
 
     public void deleteAllSessionsOfAUser(UUID userId) {
-        sessionDao.deleteAllByUserId(userId); // Use sessionDao
+        sessionDao.deleteAllByUserId(userId);
     }
 
 }

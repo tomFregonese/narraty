@@ -30,12 +30,25 @@ public class UserEntity {
 
     public int experiencePoints;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "updated_at")
     public LocalDateTime updatedAt;
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     public LocalDateTime createdAt;
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        LocalDateTime now = LocalDateTime.now();
+        if (this.createdAt == null) this.createdAt = now;
+        if (this.updatedAt == null) this.updatedAt = now;
+    }
+
 
 
     public User mapToDomain() {

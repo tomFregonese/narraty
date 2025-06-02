@@ -26,5 +26,15 @@ public class UserJpaRepositoryAdapter implements UserDao {
         return userEntity.map(UserEntity::mapToDomain);
     }
 
+    public Optional<User> findByUsername(String username) {
+        Optional<UserEntity> userEntity = repository.findByUsername(username);
+        return userEntity.map(UserEntity::mapToDomain);
+    }
+
+    public Optional<User> findByEmail(String email) {
+        Optional<UserEntity> userEntity = repository.findByEmail(email);
+        return userEntity.map(UserEntity::mapToDomain);
+    }
+
     public void deleteById(UUID userId) { repository.deleteById(userId); }
 }
