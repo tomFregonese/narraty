@@ -2,8 +2,11 @@ package com.ynov.javaformation.narraty.controllers;
 
 import com.ynov.javaformation.narraty.models.SignInCredentials;
 import com.ynov.javaformation.narraty.models.SignUpCredentials;
+import com.ynov.javaformation.narraty.models.UserCredentialsOut;
+import com.ynov.javaformation.narraty.security.Authorize;
 import com.ynov.javaformation.narraty.usecase.auth.SignInUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.SignUpUseCase;
+import com.ynov.javaformation.narraty.usecase.auth.TestSignedInUserUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +20,13 @@ public class AuthController {
 
     private final SignUpUseCase signUpUseCase;
     private final SignInUseCase signInUseCase;
+    private final TestSignedInUserUseCase testSignedInUserUseCase;
 
     @Autowired
-    public AuthController(SignUpUseCase signUp, SignInUseCase signInUseCase) {
+    public AuthController(SignUpUseCase signUp, SignInUseCase signInUseCase, TestSignedInUserUseCase testSignedInUserUseCase) {
         this.signUpUseCase = signUp;
         this.signInUseCase = signInUseCase;
+        this.testSignedInUserUseCase = testSignedInUserUseCase;
     }
 
     @PostMapping("/signup")
@@ -59,6 +64,20 @@ public class AuthController {
                     e.printStackTrace();
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
+        }
+    }
+
+    @Authorize
+    @GetMapping("/test-signed-in-user")
+    public ResponseEntity<UserCredentialsOut> testSignedInUser() {
+        try {
+
+            UserCredentialsOut userCredentialsOut = testSignedInUserUseCase.handle(null);
+            return ResponseEntity.status(HttpStatus.OK).body(userCredentialsOut);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
