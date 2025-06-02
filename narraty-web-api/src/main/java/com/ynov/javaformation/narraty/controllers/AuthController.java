@@ -1,14 +1,13 @@
 package com.ynov.javaformation.narraty.controllers;
 
+import com.ynov.javaformation.narraty.models.SignInCredentials;
 import com.ynov.javaformation.narraty.models.SignUpCredentials;
+import com.ynov.javaformation.narraty.usecase.auth.SignInUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.SignUpUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -17,10 +16,12 @@ import java.util.UUID;
 public class AuthController {
 
     private final SignUpUseCase signUpUseCase;
+    private final SignInUseCase signInUseCase;
 
     @Autowired
-    public AuthController(SignUpUseCase signUp) {
+    public AuthController(SignUpUseCase signUp, SignInUseCase signInUseCase) {
         this.signUpUseCase = signUp;
+        this.signInUseCase = signInUseCase;
     }
 
     @PostMapping("/signup")
@@ -36,6 +37,24 @@ public class AuthController {
                     return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
                 case "PasswordDoesNotMeetRequirementException":
                     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                default:
+                    e.printStackTrace();
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        }
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<UUID> signIn(@RequestBody SignInCredentials credentials) {
+        try {
+            UUID sessionId = signInUseCase.handle(credentials);
+            return ResponseEntity.status(HttpStatus.OK).body(sessionId);
+        } catch (Exception e) {
+            switch (e.getClass().getSimpleName()) {
+                case "UserWithThisEmailNotFoundException":
+                    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                case "InvalidPasswordException":
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
                 default:
                     e.printStackTrace();
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
