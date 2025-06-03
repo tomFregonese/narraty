@@ -1,7 +1,7 @@
 package com.ynov.javaformation.narraty.middlewares;
 
 import com.ynov.javaformation.narraty.models.User;
-import com.ynov.javaformation.narraty.sessions.SessionService;
+import com.ynov.javaformation.narraty.services.SessionService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

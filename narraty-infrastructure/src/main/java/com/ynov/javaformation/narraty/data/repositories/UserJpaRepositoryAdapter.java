@@ -1,7 +1,7 @@
-package com.ynov.javaformation.narraty.repositories;
+package com.ynov.javaformation.narraty.data.repositories;
 
-import com.ynov.javaformation.narraty.entities.UserEntity;
-import com.ynov.javaformation.narraty.irepositories.UserDao;
+import com.ynov.javaformation.narraty.data.entities.UserEntity;
+import com.ynov.javaformation.narraty.interfaces.daos.UserDao;
 import com.ynov.javaformation.narraty.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -1,7 +1,7 @@
-package com.ynov.javaformation.narraty.repositories;
+package com.ynov.javaformation.narraty.data.repositories;
 
-import com.ynov.javaformation.narraty.entities.SessionEntity;
-import com.ynov.javaformation.narraty.irepositories.SessionDao;
+import com.ynov.javaformation.narraty.data.entities.SessionEntity;
+import com.ynov.javaformation.narraty.interfaces.daos.SessionDao;
 import com.ynov.javaformation.narraty.models.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

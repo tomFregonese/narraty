@@ -1,4 +1,4 @@
-package com.ynov.javaformation.narraty.irepositories;
+package com.ynov.javaformation.narraty.interfaces.daos;
 
 import java.util.List;
 import java.util.Optional;

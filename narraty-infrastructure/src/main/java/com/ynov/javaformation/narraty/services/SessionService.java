@@ -1,7 +1,8 @@
-package com.ynov.javaformation.narraty.sessions;
+package com.ynov.javaformation.narraty.services;
 
-import com.ynov.javaformation.narraty.irepositories.SessionDao;
-import com.ynov.javaformation.narraty.irepositories.UserDao;
+import com.ynov.javaformation.narraty.interfaces.daos.SessionDao;
+import com.ynov.javaformation.narraty.interfaces.daos.UserDao;
+import com.ynov.javaformation.narraty.interfaces.services.ISessionService;
 import com.ynov.javaformation.narraty.models.Session;
 import com.ynov.javaformation.narraty.models.User;
 import com.ynov.javaformation.narraty.validators.SessionValidator;

@@ -1,6 +1,6 @@
 package com.ynov.javaformation.narraty.usecase.story;
 
-import com.ynov.javaformation.narraty.irepositories.StoryDao;
+import com.ynov.javaformation.narraty.interfaces.daos.StoryDao;
 import com.ynov.javaformation.narraty.models.Story;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
 import org.springframework.stereotype.Service;

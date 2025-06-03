@@ -1,4 +1,4 @@
-package com.ynov.javaformation.narraty.entities;
+package com.ynov.javaformation.narraty.data.entities;
 
 import com.ynov.javaformation.narraty.models.Session;
 import jakarta.persistence.*;

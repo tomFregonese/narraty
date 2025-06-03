@@ -4,10 +4,11 @@ import com.ynov.javaformation.narraty.exceptions.auth.EmailAlreadyExistsExceptio
 import com.ynov.javaformation.narraty.exceptions.auth.InvalidEmailException;
 import com.ynov.javaformation.narraty.exceptions.auth.PasswordDoesNotMeetRequirementException;
 import com.ynov.javaformation.narraty.exceptions.auth.UsernameAlreadyExistException;
-import com.ynov.javaformation.narraty.irepositories.UserDao;
+import com.ynov.javaformation.narraty.interfaces.daos.UserDao;
+import com.ynov.javaformation.narraty.interfaces.services.IPasswordService;
 import com.ynov.javaformation.narraty.models.SignUpCredentials;
 import com.ynov.javaformation.narraty.models.User;
-import com.ynov.javaformation.narraty.sessions.ISessionService;
+import com.ynov.javaformation.narraty.interfaces.services.ISessionService;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
 import com.ynov.javaformation.narraty.validators.EmailValidator;
 import com.ynov.javaformation.narraty.validators.PasswordValidator;
@@ -20,16 +21,17 @@ public class SignUpUseCase implements IUseCase<SignUpCredentials, UUID> {
 
     private final UserDao userDao;
     private final ISessionService sessionService;
+    private final IPasswordService passwordService;
 
-    public SignUpUseCase(UserDao userDao, ISessionService sessionService) {
+    public SignUpUseCase(UserDao userDao, ISessionService sessionService, IPasswordService passwordService) {
         this.userDao = userDao;
         this.sessionService = sessionService;
+        this.passwordService = passwordService;
     }
 
     public UUID handle(SignUpCredentials credentials) throws Exception {
         try {
 
-            // TODO j'en ai marre
             if (!EmailValidator.isValid(credentials.email)) throw new InvalidEmailException("Invalid email format");
 
             if (userDao.findByUsername(credentials.username).isPresent()) throw new UsernameAlreadyExistException("Username already exists");
@@ -41,7 +43,7 @@ public class SignUpUseCase implements IUseCase<SignUpCredentials, UUID> {
             User userToSave = User.builder()
                     .username(credentials.username)
                     .email(credentials.email)
-                    .passwordHash(credentials.password) // TODO hash password here
+                    .passwordHash(passwordService.hashPassword(credentials.password))
                     .experiencePoints(0)
                     .build();
 

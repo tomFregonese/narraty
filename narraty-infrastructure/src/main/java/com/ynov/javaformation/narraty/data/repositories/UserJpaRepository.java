@@ -1,6 +1,6 @@
-package com.ynov.javaformation.narraty.repositories;
+package com.ynov.javaformation.narraty.data.repositories;
 
-import com.ynov.javaformation.narraty.entities.UserEntity;
+import com.ynov.javaformation.narraty.data.entities.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
