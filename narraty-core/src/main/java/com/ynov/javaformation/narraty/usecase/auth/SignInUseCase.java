@@ -24,21 +24,17 @@ public class SignInUseCase implements IUseCase<SignInCredentials, UUID> {
         this.passwordService = passwordService;
     }
 
-    public UUID handle(SignInCredentials credentials) throws Exception {
-        try {
+    public UUID handle(SignInCredentials credentials) {
 
-            User user = userDao.findByEmail(credentials.email).orElseThrow(() -> new UserWithThisEmailNotFoundException("User with this email not " +
-                    "found"));
+        User user = userDao.findByEmail(credentials.email).orElseThrow(() -> new UserWithThisEmailNotFoundException("User with this email not " +
+                "found"));
 
-            if (!passwordService.verifyPassword(credentials.password, user.passwordHash)) {
-                throw new InvalidPasswordException("Passwords do not match");
-            }
-
-            return sessionService.createSession(user);
-
-        } catch (Exception e) {
-            throw new Exception("Error signing up: " + e.getMessage());
+        if (!passwordService.verifyPassword(credentials.password, user.passwordHash)) {
+            throw new InvalidPasswordException("Passwords do not match");
         }
+
+        return sessionService.createSession(user);
+
     }
 
 }

@@ -29,31 +29,27 @@ public class SignUpUseCase implements IUseCase<SignUpCredentials, UUID> {
         this.passwordService = passwordService;
     }
 
-    public UUID handle(SignUpCredentials credentials) throws Exception {
-        try {
+    public UUID handle(SignUpCredentials credentials) {
 
-            if (!EmailValidator.isValid(credentials.email)) throw new InvalidEmailException("Invalid email format");
+        if (!EmailValidator.isValid(credentials.email)) throw new InvalidEmailException("Invalid email format");
 
-            if (userDao.findByUsername(credentials.username).isPresent()) throw new UsernameAlreadyExistException("Username already exists");
+        if (userDao.findByUsername(credentials.username).isPresent()) throw new UsernameAlreadyExistException("Username already exists");
 
-            if (userDao.findByEmail(credentials.email).isPresent()) throw new EmailAlreadyExistsException("Email already exists");
+        if (userDao.findByEmail(credentials.email).isPresent()) throw new EmailAlreadyExistsException("Email already exists");
 
-            if (!PasswordValidator.IsSecure(credentials.password)) throw new PasswordDoesNotMeetRequirementException("Password does not meet security requirements");
+        if (!PasswordValidator.IsSecure(credentials.password)) throw new PasswordDoesNotMeetRequirementException("Password does not meet security requirements");
 
-            User userToSave = User.builder()
-                    .username(credentials.username)
-                    .email(credentials.email)
-                    .passwordHash(passwordService.hashPassword(credentials.password))
-                    .experiencePoints(0)
-                    .build();
+        User userToSave = User.builder()
+                .username(credentials.username)
+                .email(credentials.email)
+                .passwordHash(passwordService.hashPassword(credentials.password))
+                .experiencePoints(0)
+                .build();
 
-            User newUser = userDao.save(userToSave);
+        User newUser = userDao.save(userToSave);
 
-            return sessionService.createSession(newUser);
+        return sessionService.createSession(newUser);
 
-        } catch (Exception e) {
-            throw new Exception("Error signing up: " + e.getMessage());
-        }
     }
 
 }
