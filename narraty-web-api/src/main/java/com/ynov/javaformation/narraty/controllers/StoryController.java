@@ -19,7 +19,7 @@ public class StoryController {
     private final SaveStoryUseCase saveStoryUseCase;
 
     @Autowired
-    public StoryController(SaveStoryUseCase saveStory) { //TODO fix error here
+    public StoryController(SaveStoryUseCase saveStory) {
         this.saveStoryUseCase = saveStory;
     }
 
