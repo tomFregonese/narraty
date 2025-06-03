@@ -1,6 +1,6 @@
-package com.ynov.javaformation.narraty.repositories;
+package com.ynov.javaformation.narraty.data.repositories;
 
-import com.ynov.javaformation.narraty.entities.StoryEntity;
+import com.ynov.javaformation.narraty.data.entities.StoryEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

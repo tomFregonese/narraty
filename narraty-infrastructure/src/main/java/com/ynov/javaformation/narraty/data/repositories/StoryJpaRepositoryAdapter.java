@@ -1,7 +1,7 @@
-package com.ynov.javaformation.narraty.repositories;
+package com.ynov.javaformation.narraty.data.repositories;
 
-import com.ynov.javaformation.narraty.entities.StoryEntity;
-import com.ynov.javaformation.narraty.irepositories.StoryDao;
+import com.ynov.javaformation.narraty.data.entities.StoryEntity;
+import com.ynov.javaformation.narraty.interfaces.daos.StoryDao;
 import com.ynov.javaformation.narraty.models.Story;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

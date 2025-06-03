@@ -1,4 +1,4 @@
-package com.ynov.javaformation.narraty.sessions;
+package com.ynov.javaformation.narraty.interfaces.services;
 
 import com.ynov.javaformation.narraty.models.User;
 
