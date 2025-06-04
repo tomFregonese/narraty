@@ -1,34 +1,36 @@
 package com.ynov.javaformation.narraty.usecase.story;
 
-import com.ynov.javaformation.narraty.interfaces.daos.StoryDao;
-import com.ynov.javaformation.narraty.models.Story;
+import com.ynov.javaformation.narraty.interfaces.daos.TaleDao;
+import com.ynov.javaformation.narraty.models.Tale;
+import com.ynov.javaformation.narraty.models.TaleStatus;
+import com.ynov.javaformation.narraty.models.User;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 @Service
-public class SaveStoryUseCase implements IUseCase<Story, Story> {
+public class SaveStoryUseCase implements IUseCase<Void, Tale> {
 
-    private final StoryDao repository;
+    private final TaleDao repository;
 
-    public SaveStoryUseCase(StoryDao repository) {
+    public SaveStoryUseCase(TaleDao repository) {
         this.repository = repository;
     }
 
-    public Story handle(Story story) throws Exception {
+    public Tale handle(Void unused) {
 
-        try {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
 
-            story.createdAt = new Date();
+        Tale taleToSave = Tale.builder()
+                .title("Title of the Tale")
+                .authorId(user.id)
+                .playCount(0)
+                .status(TaleStatus.Draft)
+                .build();
 
-            // TODO Add a domain validator here
-
-            return repository.save(story);
-
-        } catch (Exception e) {
-            throw new Exception("Error saving story: " + e.getMessage());
-        }
+        return repository.save(taleToSave);
 
     }
 

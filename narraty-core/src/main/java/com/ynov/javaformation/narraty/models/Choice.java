@@ -1,18 +1,18 @@
 package com.ynov.javaformation.narraty.models;
 
 import lombok.AllArgsConstructor;
-import java.util.Date;
+
 import java.util.UUID;
 
 @AllArgsConstructor
-public class Story {
+public class Choice {
 
     public UUID id;
 
-    public String title;
+    public String text;
 
-    public String description;
+    public UUID sceneId;
 
-    public Date createdAt;
+    public UUID nextSceneId;
 
 }
