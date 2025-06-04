@@ -10,11 +10,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SaveStoryUseCase implements IUseCase<Void, Tale> {
+public class CreateTaleUseCase implements IUseCase<Void, Tale> {
 
     private final TaleDao repository;
 
-    public SaveStoryUseCase(TaleDao repository) {
+    public CreateTaleUseCase(TaleDao repository) {
         this.repository = repository;
     }
 

@@ -70,8 +70,8 @@ public class TaleEntity {
                 tale.createdAt,
                 tale.updatedAt,
                 tale.authorId,
-                tale.Scenes == null ?
-                        null : tale.Scenes.stream()
+                tale.scenes == null ?
+                        null : tale.scenes.stream()
                         .map(SceneEntity::mapToEntity)
                         .toList(),
                 tale.playCount,
