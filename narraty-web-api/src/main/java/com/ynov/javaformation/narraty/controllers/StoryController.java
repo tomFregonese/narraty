@@ -1,14 +1,13 @@
 package com.ynov.javaformation.narraty.controllers;
 
-import com.ynov.javaformation.narraty.dtos.StoryDtoIn;
-import com.ynov.javaformation.narraty.dtos.StoryDtoOut;
-import com.ynov.javaformation.narraty.models.Story;
+import com.ynov.javaformation.narraty.dtos.TaleDtoOut;
+import com.ynov.javaformation.narraty.models.Tale;
+import com.ynov.javaformation.narraty.security.Authorize;
 import com.ynov.javaformation.narraty.usecase.story.SaveStoryUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,12 +22,12 @@ public class StoryController {
         this.saveStoryUseCase = saveStory;
     }
 
+    @Authorize
     @PostMapping("/save")
-    public ResponseEntity<StoryDtoOut> saveStory(@RequestBody StoryDtoIn incomingStory) {
+    public ResponseEntity<TaleDtoOut> saveStory() {
         try {
-            Story storyToSave = incomingStory.toModel();
-            Story savedStory = saveStoryUseCase.handle(storyToSave);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new StoryDtoOut(savedStory));
+            Tale savedTale = saveStoryUseCase.handle(null);
+            return ResponseEntity.status(HttpStatus.CREATED).body(new TaleDtoOut(savedTale));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
