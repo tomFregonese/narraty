@@ -2,6 +2,7 @@ package com.ynov.javaformation.narraty.interfaces.daos;
 
 import com.ynov.javaformation.narraty.models.Tale;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -12,7 +13,9 @@ public interface TaleDao {
 
     Optional<Tale> findById(UUID id);
 
-    List<Tale> findAll();
+    Collection<Tale> findAllByAuthorId(UUID authorId);
+
+    List<Tale> findAllPublished();
 
     void deleteById(UUID id);
 

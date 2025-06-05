@@ -2,35 +2,37 @@ package com.ynov.javaformation.narraty.usecase.story;
 
 import com.ynov.javaformation.narraty.interfaces.daos.TaleDao;
 import com.ynov.javaformation.narraty.models.Tale;
-import com.ynov.javaformation.narraty.models.TaleStatus;
 import com.ynov.javaformation.narraty.models.User;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.GetAuthenticatedUserUseCase;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+
 @Service
-public class CreateTaleUseCase implements IUseCase<Void, Tale> {
+public class GetAllUserTalesUseCase implements IUseCase<Void, Collection<Tale>> {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
-    private final TaleDao repository;
+    private final TaleDao dao;
 
-    public CreateTaleUseCase(GetAuthenticatedUserUseCase getAuthenticatedUserUseCase, TaleDao repository) {
+    public GetAllUserTalesUseCase(
+            GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
+            TaleDao dao) {
         this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
-        this.repository = repository;
+        this.dao = dao;
     }
 
-    public Tale handle(Void unused) {
+    /**
+     * Retrieves all tales authored by the currently authenticated user (regardless of status).
+     *
+     * @param unused Unused parameter, can be null.
+     * @return A Collection of Tale.
+     */
+    public Collection<Tale> handle(Void unused) {
 
         User user = getAuthenticatedUserUseCase.handle(null);
 
-        Tale taleToSave = Tale.builder()
-                .title("Title of the Tale")
-                .authorId(user.id)
-                .playCount(0)
-                .status(TaleStatus.Draft)
-                .build();
-
-        return repository.save(taleToSave);
+        return dao.findAllByAuthorId(user.id);
 
     }
 
