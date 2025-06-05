@@ -3,6 +3,7 @@ package com.ynov.javaformation.narraty.controllers;
 import com.ynov.javaformation.narraty.dtos.editStory.EditTaleDtoOut;
 import com.ynov.javaformation.narraty.dtos.editStory.UpdateTaleDescriptionDtoIn;
 import com.ynov.javaformation.narraty.dtos.editStory.UpdateTaleTitleDtoIn;
+import com.ynov.javaformation.narraty.dtos.publicStory.PublicTaleDtoOut;
 import com.ynov.javaformation.narraty.dtos.publicStory.TaleIdDtoOut;
 import com.ynov.javaformation.narraty.dtosCore.UpdateTaleDescriptionDtoCore;
 import com.ynov.javaformation.narraty.dtosCore.UpdateTaleTitleDtoCore;
@@ -10,16 +11,14 @@ import com.ynov.javaformation.narraty.exceptions.story.NotTaleAuthorException;
 import com.ynov.javaformation.narraty.exceptions.story.TaleNotFoundException;
 import com.ynov.javaformation.narraty.models.Tale;
 import com.ynov.javaformation.narraty.security.Authorize;
-import com.ynov.javaformation.narraty.usecase.story.CreateTaleUseCase;
-import com.ynov.javaformation.narraty.usecase.story.GetFullTaleUseCase;
-import com.ynov.javaformation.narraty.usecase.story.UpdateTaleDescriptionUseCase;
-import com.ynov.javaformation.narraty.usecase.story.UpdateTaleTitleUseCase;
+import com.ynov.javaformation.narraty.usecase.story.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.UUID;
 
 @RestController
@@ -27,6 +26,7 @@ import java.util.UUID;
 @RequestMapping("/edit-story")
 public class EditStoryController {
 
+    private final GetAllUserTalesUseCase getAllUserTalesUseCase;
     private final CreateTaleUseCase createTaleUseCase;
     private final GetFullTaleUseCase getFullTaleUseCase;
     private final UpdateTaleTitleUseCase updateTaleTitleUseCase;
@@ -34,14 +34,29 @@ public class EditStoryController {
 
     @Autowired
     public EditStoryController(
+            GetAllUserTalesUseCase getAllUserTalesUseCase,
             CreateTaleUseCase saveStory,
             GetFullTaleUseCase getFullTaleUseCase,
             UpdateTaleTitleUseCase updateTaleTitleUseCase,
             UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase) {
+        this.getAllUserTalesUseCase = getAllUserTalesUseCase;
         this.createTaleUseCase = saveStory;
         this.getFullTaleUseCase = getFullTaleUseCase;
         this.updateTaleTitleUseCase = updateTaleTitleUseCase;
         this.updateTaleDescriptionUseCase = updateTaleDescriptionUseCase;
+    }
+
+    @Authorize
+    @GetMapping("/my-tales")
+    public ResponseEntity<Collection<PublicTaleDtoOut>> getMyTales() {
+        try {
+            Collection<Tale> tales = getAllUserTalesUseCase.handle(null);
+            Collection<PublicTaleDtoOut> talesDto = tales.stream().map(PublicTaleDtoOut::mapToDto).toList();
+            return ResponseEntity.status(HttpStatus.OK).body(talesDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @Authorize
