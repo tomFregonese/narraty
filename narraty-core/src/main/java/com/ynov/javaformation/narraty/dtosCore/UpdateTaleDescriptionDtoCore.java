@@ -5,10 +5,10 @@ import lombok.AllArgsConstructor;
 import java.util.UUID;
 
 @AllArgsConstructor
-public class UpdateTitleDtoCore {
+public class UpdateTaleDescriptionDtoCore {
 
     public UUID taleId;
 
-    public String title;
+    public String description;
 
 }
