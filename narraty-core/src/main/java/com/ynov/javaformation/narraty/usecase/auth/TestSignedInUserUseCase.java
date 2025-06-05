@@ -3,18 +3,21 @@ package com.ynov.javaformation.narraty.usecase.auth;
 import com.ynov.javaformation.narraty.models.User;
 import com.ynov.javaformation.narraty.models.UserCredentialsOut;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TestSignedInUserUseCase implements IUseCase<Void, UserCredentialsOut> {
 
+    private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
+
+    public TestSignedInUserUseCase(GetAuthenticatedUserUseCase getAuthenticatedUserUseCase) {
+        this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
+    }
+
     public UserCredentialsOut handle(Void unused) throws Exception {
         try {
 
-            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            User user = (User) auth.getPrincipal();
+            User user = getAuthenticatedUserUseCase.handle(null);
 
             if (user == null) throw new Exception("No user is currently signed in.");
 
