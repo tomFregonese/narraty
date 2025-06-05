@@ -31,6 +31,8 @@ public class EditStoryController {
     private final GetFullTaleUseCase getFullTaleUseCase;
     private final UpdateTaleTitleUseCase updateTaleTitleUseCase;
     private final UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase;
+    //private final UpdateTaleStatusUseCase updateTaleStatusUseCase;
+    private final DeleteTaleUseCase deleteTaleUseCase;
 
     @Autowired
     public EditStoryController(
@@ -38,12 +40,16 @@ public class EditStoryController {
             CreateTaleUseCase saveStory,
             GetFullTaleUseCase getFullTaleUseCase,
             UpdateTaleTitleUseCase updateTaleTitleUseCase,
-            UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase) {
+            UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase,
+            //UpdateTaleStatusUseCase updateTaleStatusUseCase,
+            DeleteTaleUseCase deleteTaleUseCase) {
         this.getAllUserTalesUseCase = getAllUserTalesUseCase;
         this.createTaleUseCase = saveStory;
         this.getFullTaleUseCase = getFullTaleUseCase;
         this.updateTaleTitleUseCase = updateTaleTitleUseCase;
         this.updateTaleDescriptionUseCase = updateTaleDescriptionUseCase;
+        //this.updateTaleStatusUseCase = updateTaleStatusUseCase;
+        this.deleteTaleUseCase = deleteTaleUseCase;
     }
 
     @Authorize
@@ -72,10 +78,10 @@ public class EditStoryController {
     }
 
     @Authorize
-    @GetMapping("/tale/{id}/info")
-    public ResponseEntity<EditTaleDtoOut> getTale(@PathVariable UUID id) {
+    @GetMapping("/tale/{taleId}/info")
+    public ResponseEntity<EditTaleDtoOut> getTale(@PathVariable UUID taleId) {
         try {
-            Tale tale = getFullTaleUseCase.handle(id);
+            Tale tale = getFullTaleUseCase.handle(taleId);
             return ResponseEntity.status(HttpStatus.OK).body(EditTaleDtoOut.mapToDto(tale));
         } catch (TaleNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
@@ -88,10 +94,10 @@ public class EditStoryController {
     }
 
     @Authorize
-    @PutMapping("/tale/{id}/title")
-    public ResponseEntity<EditTaleDtoOut> updateTaleTitle(@PathVariable UUID id, @RequestBody UpdateTaleTitleDtoIn updateTaleTitleDtoIn) {
+    @PutMapping("/tale/{taleId}/title")
+    public ResponseEntity<EditTaleDtoOut> updateTaleTitle(@PathVariable UUID taleId, @RequestBody UpdateTaleTitleDtoIn updateTaleTitleDtoIn) {
         try {
-            UpdateTaleTitleDtoCore updateTaleTitleDtoCore = updateTaleTitleDtoIn.mapToDomain(id);
+            UpdateTaleTitleDtoCore updateTaleTitleDtoCore = updateTaleTitleDtoIn.mapToDomain(taleId);
             Tale tale = updateTaleTitleUseCase.handle(updateTaleTitleDtoCore);
             return ResponseEntity.status(HttpStatus.OK).body(EditTaleDtoOut.mapToDto(tale));
         } catch (TaleNotFoundException e) {
@@ -105,14 +111,30 @@ public class EditStoryController {
     }
 
     @Authorize
-    @PutMapping("/tale/{id}/desc")
+    @PutMapping("/tale/{taleId}/desc")
     public ResponseEntity<EditTaleDtoOut> updateTaleDescription(
-            @PathVariable UUID id,
+            @PathVariable UUID taleId,
             @RequestBody UpdateTaleDescriptionDtoIn updatetaleDescriptionDtoIn) {
         try {
-            UpdateTaleDescriptionDtoCore updateTaleDescriptionDtoCore = updatetaleDescriptionDtoIn.mapToDomain(id);
+            UpdateTaleDescriptionDtoCore updateTaleDescriptionDtoCore = updatetaleDescriptionDtoIn.mapToDomain(taleId);
             Tale tale = updateTaleDescriptionUseCase.handle(updateTaleDescriptionDtoCore);
             return ResponseEntity.status(HttpStatus.OK).body(EditTaleDtoOut.mapToDto(tale));
+        } catch (TaleNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (NotTaleAuthorException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @DeleteMapping("/tale/{taleId}")
+    public ResponseEntity<Void> deleteTale(@PathVariable UUID taleId) {
+        try {
+            deleteTaleUseCase.handle(taleId);
+            return ResponseEntity.status(HttpStatus.OK).build();
         } catch (TaleNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (NotTaleAuthorException e) {
