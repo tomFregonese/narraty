@@ -23,7 +23,7 @@ public class Tale {
 
     public UUID authorId;
 
-    public Collection<Scene> Scenes;
+    public Collection<Scene> scenes;
 
     public int playCount;
 

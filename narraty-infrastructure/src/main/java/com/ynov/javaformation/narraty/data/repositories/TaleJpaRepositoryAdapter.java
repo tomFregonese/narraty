@@ -26,7 +26,12 @@ public class TaleJpaRepositoryAdapter implements TaleDao {
         return taleEntity.map(TaleEntity::mapToDomain);
     }
 
-    public List<Tale> findAll() {
+    public List<Tale> findAllByAuthorId(UUID authorId) {
+        List<TaleEntity> talesEntity = repository.findAllByAuthorId(authorId);
+        return talesEntity.stream().map(TaleEntity::mapToDomain).toList();
+    }
+
+    public List<Tale> findAllPublished() {
         List<TaleEntity> talesEntity = repository.findAll();
         return talesEntity.stream().map(TaleEntity::mapToDomain).toList();
     }

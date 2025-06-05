@@ -5,23 +5,23 @@ import com.ynov.javaformation.narraty.models.Tale;
 import com.ynov.javaformation.narraty.models.TaleStatus;
 import com.ynov.javaformation.narraty.models.User;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.ynov.javaformation.narraty.usecase.auth.GetAuthenticatedUserUseCase;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SaveStoryUseCase implements IUseCase<Void, Tale> {
+public class CreateTaleUseCase implements IUseCase<Void, Tale> {
 
+    private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
     private final TaleDao repository;
 
-    public SaveStoryUseCase(TaleDao repository) {
+    public CreateTaleUseCase(GetAuthenticatedUserUseCase getAuthenticatedUserUseCase, TaleDao repository) {
+        this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
         this.repository = repository;
     }
 
     public Tale handle(Void unused) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) auth.getPrincipal();
+        User user = getAuthenticatedUserUseCase.handle(null);
 
         Tale taleToSave = Tale.builder()
                 .title("Title of the Tale")
