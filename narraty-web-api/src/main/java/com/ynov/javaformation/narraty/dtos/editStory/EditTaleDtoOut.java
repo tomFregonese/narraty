@@ -28,7 +28,7 @@ public class EditTaleDtoOut {
 
     int plyCnt;
 
-    int status;
+    int stts;
 
 
     public static EditTaleDtoOut mapToDto(Tale tale) {

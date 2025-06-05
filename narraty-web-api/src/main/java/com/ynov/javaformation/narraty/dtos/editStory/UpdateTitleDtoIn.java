@@ -7,20 +7,20 @@ import java.util.UUID;
 
 public class UpdateTitleDtoIn {
 
-    public String title;
+    public String ttl;
 
 
     public UpdateTaleTitleDtoCore mapToTaleDomain(UUID taleId) {
         return new UpdateTaleTitleDtoCore(
                 taleId,
-                this.title
+                this.ttl
         );
     }
 
     public UpdateSceneTitleDtoCore mapToSceneDomain(UUID sceneId) {
         return new UpdateSceneTitleDtoCore(
                 sceneId,
-                this.title
+                this.ttl
         );
     }
 
