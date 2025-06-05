@@ -1,5 +1,6 @@
 package com.ynov.javaformation.narraty.controllers;
 
+import com.ynov.javaformation.narraty.dtos.editStory.EditSceneDtoOut;
 import com.ynov.javaformation.narraty.dtos.editStory.EditTaleDtoOut;
 import com.ynov.javaformation.narraty.dtos.editStory.UpdateTaleDescriptionDtoIn;
 import com.ynov.javaformation.narraty.dtos.editStory.UpdateTaleTitleDtoIn;
@@ -9,6 +10,7 @@ import com.ynov.javaformation.narraty.dtosCore.UpdateTaleDescriptionDtoCore;
 import com.ynov.javaformation.narraty.dtosCore.UpdateTaleTitleDtoCore;
 import com.ynov.javaformation.narraty.exceptions.story.NotTaleAuthorException;
 import com.ynov.javaformation.narraty.exceptions.story.TaleNotFoundException;
+import com.ynov.javaformation.narraty.models.Scene;
 import com.ynov.javaformation.narraty.models.Tale;
 import com.ynov.javaformation.narraty.security.Authorize;
 import com.ynov.javaformation.narraty.usecase.story.*;
@@ -31,6 +33,7 @@ public class EditStoryController {
     private final GetFullTaleUseCase getFullTaleUseCase;
     private final UpdateTaleTitleUseCase updateTaleTitleUseCase;
     private final UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase;
+    private final CreateSceneUseCase createSceneUseCase;
 
     @Autowired
     public EditStoryController(
@@ -38,12 +41,13 @@ public class EditStoryController {
             CreateTaleUseCase saveStory,
             GetFullTaleUseCase getFullTaleUseCase,
             UpdateTaleTitleUseCase updateTaleTitleUseCase,
-            UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase) {
+            UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase, CreateSceneUseCase createSceneUseCase) {
         this.getAllUserTalesUseCase = getAllUserTalesUseCase;
         this.createTaleUseCase = saveStory;
         this.getFullTaleUseCase = getFullTaleUseCase;
         this.updateTaleTitleUseCase = updateTaleTitleUseCase;
         this.updateTaleDescriptionUseCase = updateTaleDescriptionUseCase;
+        this.createSceneUseCase = createSceneUseCase;
     }
 
     @Authorize
@@ -104,6 +108,9 @@ public class EditStoryController {
         }
     }
 
+    /*@Authorize
+    @PutMapping("tale/{status}/status")*/
+
     @Authorize
     @PutMapping("/tale/{id}/desc")
     public ResponseEntity<EditTaleDtoOut> updateTaleDescription(
@@ -117,6 +124,18 @@ public class EditStoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (NotTaleAuthorException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @PostMapping("/create-scene/{taleId}")
+    public ResponseEntity<EditSceneDtoOut> createScene(@PathVariable UUID taleId) {
+        try {
+            Scene scene = createSceneUseCase.handle(taleId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(EditSceneDtoOut.mapToDto(scene));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
