@@ -1,11 +1,9 @@
 package com.ynov.javaformation.narraty.controllers;
 
-import com.ynov.javaformation.narraty.dtos.editStory.EditSceneDtoOut;
-import com.ynov.javaformation.narraty.dtos.editStory.EditTaleDtoOut;
-import com.ynov.javaformation.narraty.dtos.editStory.UpdateTaleDescriptionDtoIn;
-import com.ynov.javaformation.narraty.dtos.editStory.UpdateTitleDtoIn;
+import com.ynov.javaformation.narraty.dtos.editStory.*;
 import com.ynov.javaformation.narraty.dtos.publicStory.PublicTaleDtoOut;
 import com.ynov.javaformation.narraty.dtos.publicStory.TaleIdDtoOut;
+import com.ynov.javaformation.narraty.dtosCore.UpdateSceneTextDtoCore;
 import com.ynov.javaformation.narraty.dtosCore.UpdateSceneTitleDtoCore;
 import com.ynov.javaformation.narraty.dtosCore.UpdateTaleDescriptionDtoCore;
 import com.ynov.javaformation.narraty.dtosCore.UpdateTaleTitleDtoCore;
@@ -40,6 +38,7 @@ public class EditStoryController {
 
     private final CreateSceneUseCase createSceneUseCase;
     private final UpdateSceneTitleUseCase updateSceneTitleUseCase;
+    private final UpdateSceneTextUseCase updateSceneTextUseCase;
 
     @Autowired
     public EditStoryController(
@@ -52,7 +51,8 @@ public class EditStoryController {
             //UpdateTaleStatusUseCase updateTaleStatusUseCase,
 
             CreateSceneUseCase createSceneUseCase,
-            UpdateSceneTitleUseCase updateSceneTitleUseCase) {
+            UpdateSceneTitleUseCase updateSceneTitleUseCase,
+            UpdateSceneTextUseCase updateSceneTextUseCase) {
         this.getAllUserTalesUseCase = getAllUserTalesUseCase;
 
         this.createTaleUseCase = saveStory;
@@ -63,6 +63,7 @@ public class EditStoryController {
 
         this.createSceneUseCase = createSceneUseCase;
         this.updateSceneTitleUseCase = updateSceneTitleUseCase;
+        this.updateSceneTextUseCase = updateSceneTextUseCase;
     }
 
     @Authorize
@@ -130,7 +131,7 @@ public class EditStoryController {
     @PutMapping("/tale/{taleId}/desc")
     public ResponseEntity<EditTaleDtoOut> updateTaleDescription(
             @PathVariable UUID taleId,
-            @RequestBody UpdateTaleDescriptionDtoIn updatetaleDescriptionDtoIn) {
+            @RequestBody UpdateDescriptionDtoIn updatetaleDescriptionDtoIn) {
         try {
             UpdateTaleDescriptionDtoCore updateTaleDescriptionDtoCore = updatetaleDescriptionDtoIn.mapToDomain(taleId);
             Tale tale = updateTaleDescriptionUseCase.handle(updateTaleDescriptionDtoCore);
@@ -169,6 +170,25 @@ public class EditStoryController {
         try {
             UpdateSceneTitleDtoCore updateSceneTitleDtoCore = updateTitleDtoIn.mapToSceneDomain(sceneId);
             Scene scene = updateSceneTitleUseCase.handle(updateSceneTitleDtoCore);
+            return ResponseEntity.status(HttpStatus.OK).body(EditSceneDtoOut.mapToDto(scene));
+        } catch (NotTaleAuthorException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (TaleNotFoundException | SceneNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @PutMapping("/scene/{sceneId}/text")
+    public ResponseEntity<EditSceneDtoOut> updateSceneText(
+            @PathVariable UUID sceneId,
+            @RequestBody UpdateTextDtoIn updateTextDtoIn) {
+        try {
+            UpdateSceneTextDtoCore updateSceneTextDtoCore = updateTextDtoIn.mapToSceneDomain(sceneId);
+            Scene scene = updateSceneTextUseCase.handle(updateSceneTextDtoCore);
             return ResponseEntity.status(HttpStatus.OK).body(EditSceneDtoOut.mapToDto(scene));
         } catch (NotTaleAuthorException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
