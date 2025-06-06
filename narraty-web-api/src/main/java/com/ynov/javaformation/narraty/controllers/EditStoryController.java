@@ -8,6 +8,7 @@ import com.ynov.javaformation.narraty.exceptions.story.NotTaleAuthorException;
 import com.ynov.javaformation.narraty.exceptions.story.SceneNotFoundException;
 import com.ynov.javaformation.narraty.exceptions.story.SceneStatusWithThisIdDoesNotExistException;
 import com.ynov.javaformation.narraty.exceptions.story.TaleNotFoundException;
+import com.ynov.javaformation.narraty.models.Choice;
 import com.ynov.javaformation.narraty.models.Scene;
 import com.ynov.javaformation.narraty.models.Tale;
 import com.ynov.javaformation.narraty.security.Authorize;
@@ -41,6 +42,8 @@ public class EditStoryController {
     private final UpdateSceneStatusUseCase updateSceneStatusUseCase;
     private final DeleteSceneUseCase deleteSceneUseCase;
 
+    private final CreateChoiceUseCase createChoiceUseCase;
+
     @Autowired
     public EditStoryController(
             GetAllUserTalesUseCase getAllUserTalesUseCase,
@@ -55,7 +58,9 @@ public class EditStoryController {
             CreateSceneUseCase createSceneUseCase,
             UpdateSceneTitleUseCase updateSceneTitleUseCase,
             UpdateSceneTextUseCase updateSceneTextUseCase,
-            UpdateSceneStatusUseCase updateSceneStatusUseCase, DeleteSceneUseCase deleteSceneUseCase) {
+            UpdateSceneStatusUseCase updateSceneStatusUseCase, DeleteSceneUseCase deleteSceneUseCase,
+
+            CreateChoiceUseCase createChoiceUseCase) {
         this.getAllUserTalesUseCase = getAllUserTalesUseCase;
 
         this.createTaleUseCase = saveStory;
@@ -70,6 +75,8 @@ public class EditStoryController {
         this.updateSceneTextUseCase = updateSceneTextUseCase;
         this.updateSceneStatusUseCase = updateSceneStatusUseCase;
         this.deleteSceneUseCase = deleteSceneUseCase;
+
+        this.createChoiceUseCase = createChoiceUseCase;
     }
 
     @Authorize
@@ -251,6 +258,22 @@ public class EditStoryController {
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (TaleNotFoundException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (NotTaleAuthorException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @PostMapping("create-choice/{sceneId}")
+    public ResponseEntity<EditChoiceDtoOut> createChoice(@PathVariable UUID sceneId) {
+        try {
+            Choice choice = createChoiceUseCase.handle(sceneId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(EditChoiceDtoOut.mapToDto(choice));
+        } catch (SceneNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (NotTaleAuthorException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (Exception e) {
