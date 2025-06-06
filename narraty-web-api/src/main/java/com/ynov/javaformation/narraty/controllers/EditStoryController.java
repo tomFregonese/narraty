@@ -33,11 +33,13 @@ public class EditStoryController {
     private final UpdateTaleTitleUseCase updateTaleTitleUseCase;
     private final UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase;
     //private final UpdateTaleStatusUseCase updateTaleStatusUseCase;
+    private final DeleteTaleUseCase deleteTaleUseCase;
 
     private final CreateSceneUseCase createSceneUseCase;
     private final UpdateSceneTitleUseCase updateSceneTitleUseCase;
     private final UpdateSceneTextUseCase updateSceneTextUseCase;
     private final UpdateSceneStatusUseCase updateSceneStatusUseCase;
+    private final DeleteSceneUseCase deleteSceneUseCase;
 
     @Autowired
     public EditStoryController(
@@ -48,11 +50,12 @@ public class EditStoryController {
             UpdateTaleTitleUseCase updateTaleTitleUseCase,
             UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase,
             //UpdateTaleStatusUseCase updateTaleStatusUseCase,
+            DeleteTaleUseCase deleteTaleUseCase,
 
             CreateSceneUseCase createSceneUseCase,
             UpdateSceneTitleUseCase updateSceneTitleUseCase,
             UpdateSceneTextUseCase updateSceneTextUseCase,
-            UpdateSceneStatusUseCase updateSceneStatusUseCase) {
+            UpdateSceneStatusUseCase updateSceneStatusUseCase, DeleteSceneUseCase deleteSceneUseCase) {
         this.getAllUserTalesUseCase = getAllUserTalesUseCase;
 
         this.createTaleUseCase = saveStory;
@@ -60,11 +63,13 @@ public class EditStoryController {
         this.updateTaleTitleUseCase = updateTaleTitleUseCase;
         this.updateTaleDescriptionUseCase = updateTaleDescriptionUseCase;
         //this.updateTaleStatusUseCase = updateTaleStatusUseCase;
+        this.deleteTaleUseCase = deleteTaleUseCase;
 
         this.createSceneUseCase = createSceneUseCase;
         this.updateSceneTitleUseCase = updateSceneTitleUseCase;
         this.updateSceneTextUseCase = updateSceneTextUseCase;
         this.updateSceneStatusUseCase = updateSceneStatusUseCase;
+        this.deleteSceneUseCase = deleteSceneUseCase;
     }
 
     @Authorize
@@ -125,9 +130,6 @@ public class EditStoryController {
         }
     }
 
-    /*@Authorize
-    @PutMapping("tale/{status}/status")*/
-
     @Authorize
     @PutMapping("/tale/{taleId}/desc")
     public ResponseEntity<EditTaleDtoOut> updateTaleDescription(
@@ -139,6 +141,25 @@ public class EditStoryController {
             return ResponseEntity.status(HttpStatus.OK).body(EditTaleDtoOut.mapToDto(tale));
         } catch (TaleNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (NotTaleAuthorException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    /*@Authorize
+    @PutMapping("tale/{status}/status")*/
+
+    @Authorize
+    @DeleteMapping("/tale/{taleId}")
+    public ResponseEntity<Void> deleteTale(@PathVariable UUID taleId) {
+        try {
+            deleteTaleUseCase.handle(taleId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (TaleNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (NotTaleAuthorException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (Exception e) {
@@ -216,6 +237,22 @@ public class EditStoryController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (TaleNotFoundException | SceneNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @DeleteMapping("/scene/{sceneId}")
+    public ResponseEntity<Void> deleteScene(@PathVariable UUID sceneId) {
+        try {
+            deleteSceneUseCase.handle(sceneId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (TaleNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (NotTaleAuthorException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
