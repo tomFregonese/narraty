@@ -41,6 +41,7 @@ public class EditStoryController {
 
     private final CreateChoiceUseCase createChoiceUseCase;
     private final UpdateChoiceTextUseCase updateChoiceTextUseCase;
+    private final UpdateChoiceNextSceneIdUseCase updateChoiceNextSceneIdUseCase;
 
     @Autowired
     public EditStoryController(
@@ -59,7 +60,8 @@ public class EditStoryController {
             UpdateSceneStatusUseCase updateSceneStatusUseCase, DeleteSceneUseCase deleteSceneUseCase,
 
             CreateChoiceUseCase createChoiceUseCase,
-            UpdateChoiceTextUseCase updateChoiceTextUseCase) {
+            UpdateChoiceTextUseCase updateChoiceTextUseCase,
+            UpdateChoiceNextSceneIdUseCase updateChoiceNextSceneIdUseCase) {
         this.getAllUserTalesUseCase = getAllUserTalesUseCase;
 
         this.createTaleUseCase = saveStory;
@@ -77,6 +79,7 @@ public class EditStoryController {
 
         this.createChoiceUseCase = createChoiceUseCase;
         this.updateChoiceTextUseCase = updateChoiceTextUseCase;
+        this.updateChoiceNextSceneIdUseCase = updateChoiceNextSceneIdUseCase;
     }
 
     @Authorize
@@ -295,6 +298,27 @@ public class EditStoryController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         } catch (SceneNotFoundException | ChoiceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @PutMapping("/choice/{choiceId}/next-scene")
+    public ResponseEntity<EditChoiceDtoOut> updateChoiceNextSceneId(
+            @PathVariable UUID choiceId,
+            @RequestBody UpdateNextSceneIdDtoIn updateNextSceneIdDtoIn) {
+        try {
+            UpdateChoiceNextSceneIdDtoCore updateChoiceNextSceneIdDtoCore = updateNextSceneIdDtoIn.mapToDomain(choiceId);
+            Choice choice = updateChoiceNextSceneIdUseCase.handle(updateChoiceNextSceneIdDtoCore);
+            return ResponseEntity.status(HttpStatus.OK).body(EditChoiceDtoOut.mapToDto(choice));
+        } catch (NotTaleAuthorException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (SceneNotFoundException | ChoiceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (TargetedSceneDoesNotBelongToTheSaveTaleAsTheChoice e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
