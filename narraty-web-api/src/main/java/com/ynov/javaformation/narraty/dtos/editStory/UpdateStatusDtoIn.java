@@ -14,7 +14,7 @@ public class UpdateStatusDtoIn {
     public int stts;
 
 
-    /*public UpdateTaleStatusDtoCore mapToTaleDomain(UUID sceneId) {
+    public UpdateTaleStatusDtoCore mapToTaleDomain(UUID sceneId) {
         TaleStatus[] statuses = TaleStatus.values();
         if (stts < 0 || stts >= statuses.length) {
             throw new TaleStatusWithThisIdDoesNotExistException("Invalid SceneStatus ordinal: " + stts);
@@ -23,7 +23,7 @@ public class UpdateStatusDtoIn {
                 sceneId,
                 statuses[stts]
         );
-    }*/
+    }
 
     public UpdateSceneStatusDtoCore mapToSceneDomain(UUID sceneId) {
         SceneStatus[] statuses = SceneStatus.values();
