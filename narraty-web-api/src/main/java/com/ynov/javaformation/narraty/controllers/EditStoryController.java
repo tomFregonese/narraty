@@ -42,6 +42,7 @@ public class EditStoryController {
     private final CreateChoiceUseCase createChoiceUseCase;
     private final UpdateChoiceTextUseCase updateChoiceTextUseCase;
     private final UpdateChoiceNextSceneIdUseCase updateChoiceNextSceneIdUseCase;
+    private final DeleteChoiceUseCase deleteChoiceUseCase;
 
     @Autowired
     public EditStoryController(
@@ -61,7 +62,8 @@ public class EditStoryController {
 
             CreateChoiceUseCase createChoiceUseCase,
             UpdateChoiceTextUseCase updateChoiceTextUseCase,
-            UpdateChoiceNextSceneIdUseCase updateChoiceNextSceneIdUseCase) {
+            UpdateChoiceNextSceneIdUseCase updateChoiceNextSceneIdUseCase,
+            DeleteChoiceUseCase deleteChoiceUseCase) {
         this.getAllUserTalesUseCase = getAllUserTalesUseCase;
 
         this.createTaleUseCase = saveStory;
@@ -80,6 +82,7 @@ public class EditStoryController {
         this.createChoiceUseCase = createChoiceUseCase;
         this.updateChoiceTextUseCase = updateChoiceTextUseCase;
         this.updateChoiceNextSceneIdUseCase = updateChoiceNextSceneIdUseCase;
+        this.deleteChoiceUseCase = deleteChoiceUseCase;
     }
 
     @Authorize
@@ -319,6 +322,24 @@ public class EditStoryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (TargetedSceneDoesNotBelongToTheSaveTaleAsTheChoice e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @DeleteMapping("/choice/{choiceId}")
+    public ResponseEntity<Void> deleteChoice(@PathVariable UUID choiceId) {
+        try {
+            deleteChoiceUseCase.handle(choiceId);
+            return ResponseEntity.status(HttpStatus.OK).build();
+        } catch (SceneNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (NotTaleAuthorException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (ChoiceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
