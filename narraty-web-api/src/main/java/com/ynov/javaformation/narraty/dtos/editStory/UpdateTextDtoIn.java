@@ -1,5 +1,6 @@
 package com.ynov.javaformation.narraty.dtos.editStory;
 
+import com.ynov.javaformation.narraty.dtosCore.UpdateChoiceTextDtoCore;
 import com.ynov.javaformation.narraty.dtosCore.UpdateSceneTextDtoCore;
 
 import java.util.UUID;
@@ -16,11 +17,11 @@ public class UpdateTextDtoIn {
     }
 
 
-    /*public UpdateChoiceTextDtoCore mapToTaleDomain(UUID taleId) {
+    public UpdateChoiceTextDtoCore mapToChoiceDomain(UUID taleId) {
         return new UpdateChoiceTextDtoCore(
                 taleId,
                 this.txt
         );
-    }*/
+    }
 
 }
