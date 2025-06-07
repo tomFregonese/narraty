@@ -4,10 +4,7 @@ import com.ynov.javaformation.narraty.dtos.editStory.*;
 import com.ynov.javaformation.narraty.dtos.publicStory.PublicTaleDtoOut;
 import com.ynov.javaformation.narraty.dtos.publicStory.TaleIdDtoOut;
 import com.ynov.javaformation.narraty.dtosCore.*;
-import com.ynov.javaformation.narraty.exceptions.story.NotTaleAuthorException;
-import com.ynov.javaformation.narraty.exceptions.story.SceneNotFoundException;
-import com.ynov.javaformation.narraty.exceptions.story.SceneStatusWithThisIdDoesNotExistException;
-import com.ynov.javaformation.narraty.exceptions.story.TaleNotFoundException;
+import com.ynov.javaformation.narraty.exceptions.story.*;
 import com.ynov.javaformation.narraty.models.Choice;
 import com.ynov.javaformation.narraty.models.Scene;
 import com.ynov.javaformation.narraty.models.Tale;
@@ -43,6 +40,7 @@ public class EditStoryController {
     private final DeleteSceneUseCase deleteSceneUseCase;
 
     private final CreateChoiceUseCase createChoiceUseCase;
+    private final UpdateChoiceTextUseCase updateChoiceTextUseCase;
 
     @Autowired
     public EditStoryController(
@@ -60,7 +58,8 @@ public class EditStoryController {
             UpdateSceneTextUseCase updateSceneTextUseCase,
             UpdateSceneStatusUseCase updateSceneStatusUseCase, DeleteSceneUseCase deleteSceneUseCase,
 
-            CreateChoiceUseCase createChoiceUseCase) {
+            CreateChoiceUseCase createChoiceUseCase,
+            UpdateChoiceTextUseCase updateChoiceTextUseCase) {
         this.getAllUserTalesUseCase = getAllUserTalesUseCase;
 
         this.createTaleUseCase = saveStory;
@@ -77,6 +76,7 @@ public class EditStoryController {
         this.deleteSceneUseCase = deleteSceneUseCase;
 
         this.createChoiceUseCase = createChoiceUseCase;
+        this.updateChoiceTextUseCase = updateChoiceTextUseCase;
     }
 
     @Authorize
@@ -276,6 +276,25 @@ public class EditStoryController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (NotTaleAuthorException e) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @PutMapping("/choice/{choiceId}/text")
+    public ResponseEntity<EditChoiceDtoOut> updateChoiceText(
+            @PathVariable UUID choiceId,
+            @RequestBody UpdateTextDtoIn updateTextDtoIn) {
+        try {
+            UpdateChoiceTextDtoCore updateChoiceTextDtoCore = updateTextDtoIn.mapToChoiceDomain(choiceId);
+            Choice choice = updateChoiceTextUseCase.handle(updateChoiceTextDtoCore);
+            return ResponseEntity.status(HttpStatus.OK).body(EditChoiceDtoOut.mapToDto(choice));
+        } catch (NotTaleAuthorException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (SceneNotFoundException | ChoiceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
