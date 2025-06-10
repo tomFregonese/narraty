@@ -49,9 +49,7 @@ public class UpdateTaleStatusUseCase implements IUseCase<UpdateTaleStatusDtoCore
 
             Collection<TaleErrors> taleErrors= checkTaleValidity.handle(tale);
 
-            if (taleErrors.isEmpty()) return dao.save(tale);
-
-            throw new UnprocessableTaleException("Cannot publish tale with errors: " + taleErrors);
+            if (taleErrors != null) throw new UnprocessableTaleException("Cannot publish tale with errors", taleErrors);
 
         }
 

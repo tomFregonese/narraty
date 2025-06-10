@@ -164,15 +164,15 @@ public class EditStoryController {
 
     @Authorize
     @PutMapping("tale/{taleId}/status")
-    public ResponseEntity<EditTaleDtoOut> updateTaleStatus(
+    public ResponseEntity<UpdateStatusResultDtoOut> updateTaleStatus(
             @PathVariable UUID taleId,
             @RequestBody UpdateStatusDtoIn updateStatusDtoIn) {
         try {
             UpdateTaleStatusDtoCore updateTaleStatusDtoCore = updateStatusDtoIn.mapToTaleDomain(taleId);
             Tale tale = updateTaleStatusUseCase.handle(updateTaleStatusDtoCore);
-            return ResponseEntity.status(HttpStatus.OK).body(EditTaleDtoOut.mapToDto(tale));
+            return ResponseEntity.status(HttpStatus.OK).body(UpdateStatusResultDtoOut.mapToDto(tale));
         } catch (UnprocessableTaleException e) {
-            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(UpdateStatusResultDtoOut.mapToDto(e.taleErrors));
         } catch (TaleNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } catch (NotTaleAuthorException e) {
