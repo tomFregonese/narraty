@@ -1,0 +1,9 @@
+<app-main-block>
+  <div slot="content" class="tale-page">
+    <app-tale-nav class="tale-nav" [taleTitle]="taleTitle" />
+    <app-tale-content
+      [scene]="scene"
+      (choiceIdSelected)="makeAChoice($event)"
+    />
+  </div>
+</app-main-block>

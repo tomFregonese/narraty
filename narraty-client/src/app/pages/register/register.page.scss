@@ -1,0 +1,54 @@
+:host {
+  height: 100%;
+}
+.error-message {
+  color:#F8D0D0 ;
+  font-size: 13px;
+  margin-top: 2px;
+  display: block;
+}
+.home-page-content {
+  display: flex;
+  flex-direction: column;
+  font-family: 'PPMondwest', sans-serif;
+  flex: 1 1 100%;
+
+  .logo {
+    font-size: 4rem;
+    flex: 1 1 50%;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1 1 50%;
+    gap: 1rem;
+    margin-inline: auto;
+    
+    #error {
+      font-family: 'PPMondwest', sans-serif;
+      text-align: center;
+    }
+
+    #title {
+      font-size: 32px;
+      font-family: 'PPMondwest', sans-serif;
+      text-align: center;
+    }
+
+    form {
+      display:flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 267px;
+
+    }
+
+  }
+}

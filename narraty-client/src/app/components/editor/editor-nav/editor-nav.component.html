@@ -1,0 +1,23 @@
+<div class="part-container">
+  <app-link-button
+    class="nav-link"
+    [returnIcon]="true"
+    link="/"
+    name="Retour à l'accueil"
+  />
+</div>
+<div class="part-container" id="nav-title-container">
+  <h1 class="nav-title">{{ taleTitle }}</h1>
+  <button class="edit-icon" (click)="togglePopup()">
+    <img
+      src="assets/images/pencil.png"
+      class="pencil-icon"
+      alt="Editer le titre du conte"
+    />
+  </button>
+</div>
+<div class="part-container" id="nav-buttons-container">
+  <button id="publish">Publier</button>
+  <button id="archive">Archiver</button>
+  <button id="delete">Supprimer</button>
+</div>

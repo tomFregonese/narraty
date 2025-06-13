@@ -1,0 +1,11 @@
+@if (returnIcon) {
+  <a class="btn" [routerLink]="link">&lt; {{ name }}</a>
+}@else if (samePageUnderline === link) {
+  <a class="btn underlined" [routerLink]="link">{{ name }}</a>
+}@else if (secondary) {
+  <a class="btn secondary" [routerLink]="link">{{ name }}</a>
+}@else if (button){
+  <a class="btn button" [routerLink]="link">{{ name }}</a>
+}@else {
+  <a class="btn" [routerLink]="link">{{ name }}</a>
+}

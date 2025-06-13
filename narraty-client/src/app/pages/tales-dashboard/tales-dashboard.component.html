@@ -1,0 +1,20 @@
+<app-main-block>
+  <div slot="content" class="explore-page-content">
+    <app-navbar></app-navbar>
+
+    <div id="content">
+      <span id="title">Toutes mes aventures</span>
+      <div id="list">
+
+          <button (click)="createTale()" class="create-tale-button">+</button>
+
+        <app-tales-card-edit
+          *ngFor="let tale of myTales"
+          [tale]="tale"
+          [id]="tale.id">
+        </app-tales-card-edit>
+        
+      </div>
+    </div>
+  </div>
+</app-main-block>

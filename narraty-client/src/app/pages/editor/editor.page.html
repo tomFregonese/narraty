@@ -1,0 +1,29 @@
+<app-main-block>
+  <div slot="content" class="editor-page">
+    <app-editor-nav
+      class="editor-nav"
+      (openPopup)="onOpenPopup()"
+      [taleTitle]="tale.title"
+    />
+    <app-editor-scene
+      [scene]="currentScene"
+      [sceneIds]="sceneIds"
+      [currentSceneId]="currentSceneId"
+      (sceneChange)="onSceneChange($event)"
+      (addScene)="addScene()"
+    />
+    <app-editor-choice
+      [choices]="currentChoices"
+      [sceneIds]="sceneIds"
+      [currentSceneId]="currentSceneId"
+      (sceneChange)="onSceneChange($event)"
+      (addChoice)="addChoice()"
+    />
+    <app-editor-tale
+      class="editor-tale"
+      *ngIf="showPopup"
+      [tale]="tale"
+      (close)="onClosePopup()"
+    />
+  </div>
+</app-main-block>

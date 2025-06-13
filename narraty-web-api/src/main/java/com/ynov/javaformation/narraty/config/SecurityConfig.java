@@ -1,6 +1,7 @@
 package com.ynov.javaformation.narraty.config;
 
 import com.ynov.javaformation.narraty.middlewares.BearerAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -13,6 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
 
+    @Autowired CustomCorsConfiguration customCorsConfiguration;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, BearerAuthenticationFilter bearerFilter) throws Exception {
         return http
@@ -21,6 +24,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .addFilterBefore(bearerFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors(cors -> cors.configurationSource(customCorsConfiguration))
                 .build();
     }
 

@@ -1,0 +1,20 @@
+<div id="toolBar">
+    <div class="left">
+
+      <app-link-button link="/explore" name="Explorer"></app-link-button>
+    </div>
+    
+    <div class="middle">
+      <span>StoryForge</span>
+    </div>
+    
+<div class="right">
+  @if(isConnected) {
+    <app-link-button link="/tales-dashboard" name="Mes histoires"></app-link-button>
+    <button type="button" (click)="logout()" >Se deconnecter</button>
+  } @else {
+    <app-link-button link="/login" name="Se connecter"></app-link-button>
+    <app-link-button link="/register" name="Créer un compte"></app-link-button>
+  }
+</div>
+  </div>

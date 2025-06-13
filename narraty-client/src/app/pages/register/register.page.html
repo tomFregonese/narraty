@@ -1,0 +1,51 @@
+<app-main-block>
+  <div slot="content" class="home-page-content">
+    <div class="logo">
+      <span>L'histoire dont vous êtes le héro</span>
+    </div>
+    <div class="form-container">
+      <span id="title">S'enregistrer</span>
+      <form [formGroup]="register" (ngSubmit)="onSubmit()">
+        <app-form-input formControlName="username" labelFor="username" name="Nom d'utilisateur" type="text"
+          placeholder="Nom d'utilisateur"></app-form-input>
+        <div *ngIf="register.get('username')?.invalid && register.get('username')?.touched">
+          <small class="error-message" *ngIf="register.get('username')?.errors?.['required']">Le nom d'utilisateur est requis.</small>
+          <small class="error-message" *ngIf="register.get('username')?.errors?.['minlength']">Le nom d'utilisateur doit contenir au moins 3
+            caractères.</small>
+          <small class="error-message" *ngIf="register.get('username')?.errors?.['maxlength']">Le nom d'utilisateur doit contenir au maximum
+            20 caractères.</small>
+        </div>
+
+        <app-form-input formControlName="email" labelFor="email" name="Email" type="email"
+          placeholder="Email"></app-form-input>
+        <div *ngIf="register.get('email')?.invalid && register.get('email')?.touched">
+          <small class="error-message" *ngIf="register.get('email')?.errors?.['required']">L'email est requis.</small>
+          <small class="error-message" *ngIf="register.get('email')?.errors?.['email']">L'email n'est pas valide.</small>
+        </div>
+
+        <app-form-input formControlName="password" labelFor="password" name="Mot de passe" type="password"
+          placeholder="Mot de passe"></app-form-input>
+        <div *ngIf="register.get('password')?.invalid && register.get('password')?.touched">
+          <small class="error-message" *ngIf="register.get('password')?.errors?.['required']">Le mot de passe est requis.</small>
+          <small class="error-message" *ngIf="register.get('password')?.errors?.['minlength']">Minimum 8 caractères requis.</small>
+          <small class="error-message" *ngIf="register.get('password')?.errors?.['maxlength']">Maximum 64 caractères autorisés.</small>
+          <small class="error-message" *ngIf="register.get('password')?.errors?.['passwordComplexity']">
+            Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.
+          </small>
+        </div>
+
+        <app-form-input formControlName="confirmPassword" labelFor="confirmPassword" name="Confirmer le mot de passe"
+          type="password" placeholder="Confirmer le mot de passe"></app-form-input>
+        <div *ngIf="register.get('confirmPassword')?.touched && register.errors?.['PasswordNoMatch']">
+          <small class="error-message">Les mots de passe ne correspondent pas.</small>
+        </div>
+        
+        <app-form-button name="S'inscrire"></app-form-button>
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+      </form>
+      <app-link-button link="/login" name="Déjà un compte ? Se connecter" />
+    </div>
+  </div>
+</app-main-block>

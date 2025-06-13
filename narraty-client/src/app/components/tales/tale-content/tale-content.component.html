@@ -1,0 +1,14 @@
+<div class="scene-container" *ngIf="scene">
+  <div class="scene-text">
+    <p>{{ scene.text }}</p>
+  </div>
+  <ul class="scene-choices">
+    <li *ngFor="let choice of scene.choices; let i = index">
+      <app-tale-choice
+        [text]="choice.text"
+        [index]="i"
+        (clicked)="selectChoice(choice.id)"
+      />
+    </li>
+  </ul>
+</div>
