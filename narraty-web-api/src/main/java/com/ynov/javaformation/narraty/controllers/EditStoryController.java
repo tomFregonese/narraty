@@ -30,7 +30,7 @@ public class EditStoryController {
     private final GetFullTaleUseCase getFullTaleUseCase;
     private final UpdateTaleTitleUseCase updateTaleTitleUseCase;
     private final UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase;
-    //private final UpdateTaleStatusUseCase updateTaleStatusUseCase;
+    private final UpdateTaleStatusUseCase updateTaleStatusUseCase;
     private final DeleteTaleUseCase deleteTaleUseCase;
 
     private final CreateSceneUseCase createSceneUseCase;
@@ -52,7 +52,7 @@ public class EditStoryController {
             GetFullTaleUseCase getFullTaleUseCase,
             UpdateTaleTitleUseCase updateTaleTitleUseCase,
             UpdateTaleDescriptionUseCase updateTaleDescriptionUseCase,
-            //UpdateTaleStatusUseCase updateTaleStatusUseCase,
+            UpdateTaleStatusUseCase updateTaleStatusUseCase,
             DeleteTaleUseCase deleteTaleUseCase,
 
             CreateSceneUseCase createSceneUseCase,
@@ -70,7 +70,7 @@ public class EditStoryController {
         this.getFullTaleUseCase = getFullTaleUseCase;
         this.updateTaleTitleUseCase = updateTaleTitleUseCase;
         this.updateTaleDescriptionUseCase = updateTaleDescriptionUseCase;
-        //this.updateTaleStatusUseCase = updateTaleStatusUseCase;
+        this.updateTaleStatusUseCase = updateTaleStatusUseCase;
         this.deleteTaleUseCase = deleteTaleUseCase;
 
         this.createSceneUseCase = createSceneUseCase;
@@ -162,8 +162,26 @@ public class EditStoryController {
         }
     }
 
-    /*@Authorize
-    @PutMapping("tale/{status}/status")*/
+    @Authorize
+    @PutMapping("tale/{taleId}/status")
+    public ResponseEntity<UpdateStatusResultDtoOut> updateTaleStatus(
+            @PathVariable UUID taleId,
+            @RequestBody UpdateStatusDtoIn updateStatusDtoIn) {
+        try {
+            UpdateTaleStatusDtoCore updateTaleStatusDtoCore = updateStatusDtoIn.mapToTaleDomain(taleId);
+            Tale tale = updateTaleStatusUseCase.handle(updateTaleStatusDtoCore);
+            return ResponseEntity.status(HttpStatus.OK).body(UpdateStatusResultDtoOut.mapToDto(tale));
+        } catch (UnprocessableTaleException e) {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(UpdateStatusResultDtoOut.mapToDto(e.taleErrors));
+        } catch (TaleNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (NotTaleAuthorException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 
     @Authorize
     @DeleteMapping("/tale/{taleId}")
