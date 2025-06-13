@@ -1,5 +1,4 @@
-import {ReadChoiceDtoIn} from '../dtos/choice.dto';
-import {EditChoice} from './choice.model';
+import {EditChoice, ReadChoice} from './choice.model';
 import {SceneStatus} from '../enums/scene-status.enum';
 
 export interface ReadScene {
@@ -8,7 +7,7 @@ export interface ReadScene {
 
     text: string;
 
-    choices: ReadChoiceDtoIn[];
+    choices: ReadChoice[];
 
 }
 

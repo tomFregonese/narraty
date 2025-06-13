@@ -9,10 +9,10 @@ import {AbstractService} from './abstract.service';
 })
 export class AuthService extends AbstractService {
 
-    override servicePrefix = '/auth';
+    private authApiUrl = `${this.backBaseUrl}/auth`;
 
     login(user: Login): Observable<any> {
-        const url = `${this.backBaseUrl}${this.servicePrefix}/signin`;
+        const url = `${this.authApiUrl}/signin`;
         const body = {
             email: user.email,
             password: user.password,
@@ -57,7 +57,7 @@ export class AuthService extends AbstractService {
     }
 
     registerUser(newUser: Register): Observable<any> { // TODO Not tested yet
-        const url = `${this.backBaseUrl}${this.servicePrefix}/signup`;
+        const url = `${this.authApiUrl}/signup`;
 
         const body = {
             email: newUser.email,

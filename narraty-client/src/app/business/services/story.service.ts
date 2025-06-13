@@ -35,7 +35,7 @@ export class DisplayStoryService extends StoryService {
     constructor(httpClient: HttpClient, authService: AuthService, private taleMapper: TaleMapper) {
         super(httpClient, authService);
     }
-    private displayStoryApiUrl = `${this.backBaseUrl}/PublicStory`;
+    private displayStoryApiUrl = `${this.backBaseUrl}/public-story`;
 
     getAllTales(): Observable<ReadTale[]> {
         const url = `${this.displayStoryApiUrl}/all-tales`;
@@ -142,7 +142,7 @@ export class EditStoryService extends StoryService {
         super(httpClient, authService);
     }
 
-    private editStoryApiUrl = `${this.backBaseUrl}/EditStory`;
+    private editStoryApiUrl = `${this.backBaseUrl}/edit-story`;
 
     createTale(): Observable<EditTale> {
         const url = `${this.editStoryApiUrl}/create-tale`;
@@ -159,7 +159,7 @@ export class EditStoryService extends StoryService {
     }
 
     getTaleInfo(taleId: string): Observable<EditTale> { // TODO : Not tested yet
-        const url = `${this.editStoryApiUrl}/tale/${taleId}/tale-info`;
+        const url = `${this.editStoryApiUrl}/tale/${taleId}/info`;
         const headers = this.headers
 
         return this.httpClient.get(url, { headers }).pipe(

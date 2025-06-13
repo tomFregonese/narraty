@@ -8,15 +8,15 @@ export class ChoiceMapper {
     public mapReadChoiceDtoInToReadChoice(choiceDto: ReadChoiceDtoIn): ReadChoice {
         return {
             id: choiceDto.id,
-            text: choiceDto.text,
+            text: choiceDto.txt,
         };
     }
 
     public mapEditChoiceDtoInToEditChoice(choiceDto: EditChoiceDtoIn): EditChoice {
         return {
             id: choiceDto.id,
-            text: choiceDto.text,
-            nextSceneId: choiceDto.nextSceneId,
+            text: choiceDto.txt,
+            nextSceneId: choiceDto.nxtScnId,
         };
     }
 

@@ -2,11 +2,11 @@ import {EditChoiceDtoIn, ReadChoiceDtoIn} from './choice.dto';
 
 export interface ReadSceneDtoIn {
 
-    title: string;
+    ttl: string;
 
-    text: string;
+    txt: string;
 
-    choices: ReadChoiceDtoIn[];
+    chcs: ReadChoiceDtoIn[];
 
 }
 
@@ -14,12 +14,12 @@ export interface EditSceneDtoIn {
 
     id: string
 
-    title: string;
+    ttl: string;
 
-    text: string;
+    txt: string;
 
-    status: number;
+    stts: number;
 
-    choices: EditChoiceDtoIn[];
+    chcs: EditChoiceDtoIn[];
 
 }

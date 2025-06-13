@@ -4,17 +4,17 @@ export interface ReadTaleDtoIn {
 
     id: string;
 
-    title: string;
+    ttl: string;
 
-    description: string;
+    dsc: string;
 
-    createdAt: string;
+    crtAt: string;
 
-    updatedAt: string;
+    updAt: string;
 
-    authorId: string;
+    autrId: string;
 
-    playCount: number;
+    plyCnt: number;
 
 }
 
@@ -22,20 +22,20 @@ export interface EditTaleDtoIn {
 
     id: string;
 
-    title: string;
+    ttl: string;
 
-    description: string;
+    dsc: string;
 
-    createdAt: string;
+    crtAt: string;
 
-    updatedAt: string;
+    updAt: string;
 
-    authorId: string;
+    autrId: string;
 
-    status: number;
+    stts: number;
 
-    scenes: EditSceneDtoIn[];
+    scns: EditSceneDtoIn[];
 
-    playCount: number;
+    plyCnt: number;
 
 }

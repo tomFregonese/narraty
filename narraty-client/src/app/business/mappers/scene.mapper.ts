@@ -10,18 +10,18 @@ export class SceneMapper {
 
     public mapReadSceneDtoInToReadScene(sceneDto: ReadSceneDtoIn): ReadScene {
         return {
-            title: sceneDto.title,
-            text: sceneDto.text,
-            choices: sceneDto.choices.map(choice => this.choiceMapper.mapReadChoiceDtoInToReadChoice(choice))};
+            title: sceneDto.ttl,
+            text: sceneDto.txt,
+            choices: sceneDto.chcs.map(choice => this.choiceMapper.mapReadChoiceDtoInToReadChoice(choice))};
     }
 
     public mapEditSceneDtoInToEditScene(sceneDto: EditSceneDtoIn): EditScene {
         return {
             id: sceneDto.id,
-            title: sceneDto.title,
-            text: sceneDto.text,
-            status: sceneDto.status,
-            choices: sceneDto.choices ? sceneDto.choices.map(choice => this.choiceMapper.mapEditChoiceDtoInToEditChoice(choice)) : []
+            title: sceneDto.ttl,
+            text: sceneDto.txt,
+            status: sceneDto.stts,
+            choices: sceneDto.chcs ? sceneDto.chcs.map(choice => this.choiceMapper.mapEditChoiceDtoInToEditChoice(choice)) : []
         };
     }
 

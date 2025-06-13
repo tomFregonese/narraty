@@ -11,26 +11,26 @@ export class TaleMapper {
     public mapReadTaleDtoInToReadTaleModel(taleDto: ReadTaleDtoIn): ReadTale {
         return {
             id: taleDto.id,
-            title: taleDto.title,
-            description: taleDto.description,
-            createdAt: new Date(taleDto.createdAt),
-            updatedAt: new Date(taleDto.updatedAt),
-            authorId: taleDto.authorId,
-            playCount: taleDto.playCount
+            title: taleDto.ttl,
+            description: taleDto.dsc,
+            createdAt: new Date(taleDto.crtAt),
+            updatedAt: new Date(taleDto.updAt),
+            authorId: taleDto.autrId,
+            playCount: taleDto.plyCnt
         };
     }
 
     mapEditTaleDtoInToEditTaleModel(taleDto: EditTaleDtoIn): EditTale {
         return {
             id: taleDto.id,
-            title: taleDto.title,
-            description: taleDto.description,
-            createdAt: new Date(taleDto.createdAt),
-            updatedAt: new Date(taleDto.updatedAt),
-            authorId: taleDto.authorId,
-            status: taleDto.status,
-            scenes: taleDto.scenes ? taleDto.scenes.map(scene => this.sceneMapper.mapEditSceneDtoInToEditScene(scene)) : [],
-            playCount: taleDto.playCount
+            title: taleDto.ttl,
+            description: taleDto.dsc,
+            createdAt: new Date(taleDto.crtAt),
+            updatedAt: new Date(taleDto.updAt),
+            authorId: taleDto.autrId,
+            status: taleDto.stts,
+            scenes: taleDto.scns ? taleDto.scns.map(scene => this.sceneMapper.mapEditSceneDtoInToEditScene(scene)) : [],
+            playCount: taleDto.plyCnt
         };
     }
 
