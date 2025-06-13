@@ -10,8 +10,8 @@ import com.ynov.javaformation.narraty.models.SignUpCredentials;
 import com.ynov.javaformation.narraty.models.User;
 import com.ynov.javaformation.narraty.interfaces.services.ISessionService;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
-import com.ynov.javaformation.narraty.validators.EmailValidator;
-import com.ynov.javaformation.narraty.validators.PasswordValidator;
+import com.ynov.javaformation.narraty.validators.auth.EmailValidator;
+import com.ynov.javaformation.narraty.validators.auth.PasswordValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package com.ynov.javaformation.narraty.validators;
+package com.ynov.javaformation.narraty.validators.auth;
 
 import com.ynov.javaformation.narraty.models.Session;
 

@@ -7,7 +7,7 @@ public enum TaleErrors {
 
     HasNotAtLeastFourScenes("The tale must have at least four scenes."),
 
-    NoStartScene("The tale must have a start scene."),
+    NoStartScene("The tale must have a start scene and only one."),
 
     NoWinScene("The tale must have a win scene."),
 

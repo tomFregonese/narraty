@@ -5,7 +5,7 @@ import com.ynov.javaformation.narraty.interfaces.daos.UserDao;
 import com.ynov.javaformation.narraty.interfaces.services.ISessionService;
 import com.ynov.javaformation.narraty.models.Session;
 import com.ynov.javaformation.narraty.models.User;
-import com.ynov.javaformation.narraty.validators.SessionValidator;
+import com.ynov.javaformation.narraty.validators.auth.SessionValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
