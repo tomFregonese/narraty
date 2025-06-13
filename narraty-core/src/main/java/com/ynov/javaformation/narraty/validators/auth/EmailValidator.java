@@ -1,4 +1,4 @@
-package com.ynov.javaformation.narraty.validators;
+package com.ynov.javaformation.narraty.validators.auth;
 
 public class EmailValidator {
 

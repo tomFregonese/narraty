@@ -17,7 +17,7 @@ public class EditSceneDtoOut {
 
     String txt;
 
-    int status;
+    int stts;
 
     Collection<EditChoiceDtoOut> chcs;
 
