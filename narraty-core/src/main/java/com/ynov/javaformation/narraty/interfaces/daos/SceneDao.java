@@ -11,6 +11,8 @@ public interface SceneDao {
 
     Optional<Scene> findById(UUID id);
 
+    Optional<Scene> findFirstSceneByTaleId(UUID taleId);
+
     void deleteById(UUID id);
 
 }
