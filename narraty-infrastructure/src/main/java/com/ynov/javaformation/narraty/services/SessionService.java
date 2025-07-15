@@ -49,12 +49,12 @@ public class SessionService implements ISessionService {
         }
     }
 
-    public void deleteSession(UUID token) {
+    public void invalidateSession(UUID token) {
         sessionDao.delete(token);
     }
 
-    public void deleteAllSessionsOfAUser(UUID userId) {
-        sessionDao.deleteAllByUserId(userId);
+    public void invalidateUserSessionsExceptCurrent(User user, UUID currentSessionId) {
+        sessionDao.deleteSessionsFromAUserExceptOne(user.id, currentSessionId);
     }
 
 }
