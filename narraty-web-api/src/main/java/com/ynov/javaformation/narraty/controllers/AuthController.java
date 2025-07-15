@@ -5,10 +5,12 @@ import com.ynov.javaformation.narraty.models.SignInCredentials;
 import com.ynov.javaformation.narraty.models.SignUpCredentials;
 import com.ynov.javaformation.narraty.models.UserCredentialsOut;
 import com.ynov.javaformation.narraty.security.Authorize;
+import com.ynov.javaformation.narraty.usecase.auth.ClearExpiredSessionsUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.SignInUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.SignUpUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.TestSignedInUserUseCase;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@Transactional
 @RestController
 @Tag(name = "Authentication")
 @RequestMapping("/auth")
@@ -24,12 +27,15 @@ public class AuthController {
     private final SignUpUseCase signUpUseCase;
     private final SignInUseCase signInUseCase;
     private final TestSignedInUserUseCase testSignedInUserUseCase;
+    private final ClearExpiredSessionsUseCase clearExpiredSessionsUseCase;
 
     @Autowired
-    public AuthController(SignUpUseCase signUp, SignInUseCase signInUseCase, TestSignedInUserUseCase testSignedInUserUseCase) {
+    public AuthController(SignUpUseCase signUp, SignInUseCase signInUseCase,
+                          TestSignedInUserUseCase testSignedInUserUseCase, ClearExpiredSessionsUseCase clearExpiredSessionsUseCase) {
         this.signUpUseCase = signUp;
         this.signInUseCase = signInUseCase;
         this.testSignedInUserUseCase = testSignedInUserUseCase;
+        this.clearExpiredSessionsUseCase = clearExpiredSessionsUseCase;
     }
 
     @PostMapping("/signup")
@@ -83,6 +89,19 @@ public class AuthController {
             UserCredentialsOut userCredentialsOut = testSignedInUserUseCase.handle(null);
             return ResponseEntity.status(HttpStatus.OK).body(userCredentialsOut);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/clear-expired-sessions")
+    public ResponseEntity<Void> clearExpiredSessions() {
+        try {
+            // This endpoint is for testing purposes and should not be exposed in production
+            // It is assumed that the ClearExpiredSessionsUseCase is scheduled to run periodically
+            clearExpiredSessionsUseCase.handle(null);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();

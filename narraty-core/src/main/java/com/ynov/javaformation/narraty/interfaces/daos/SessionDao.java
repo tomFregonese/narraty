@@ -14,6 +14,8 @@ public interface SessionDao {
 
     Optional<Session> findByToken(UUID id);
 
+    void deleteExpiredSessions();
+
     void deleteAllByUserId(UUID userId);
 
 }

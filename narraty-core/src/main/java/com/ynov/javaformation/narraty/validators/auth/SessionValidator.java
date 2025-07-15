@@ -21,4 +21,8 @@ public class SessionValidator {
         return session.createdAt.plusDays(SESSION_EXPIRATION_DAYS).isAfter(LocalDateTime.now());
     }
 
+    public static long getSessionExpirationDays() {
+        return SESSION_EXPIRATION_DAYS;
+    }
+
 }
