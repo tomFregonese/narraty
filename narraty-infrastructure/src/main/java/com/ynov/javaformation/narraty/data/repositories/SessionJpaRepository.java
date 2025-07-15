@@ -14,7 +14,9 @@ public interface SessionJpaRepository extends JpaRepository<SessionEntity, UUID>
 
     Optional<SessionEntity> findByToken(UUID token);
 
-    void deleteAllByUserId(UUID userId);
+    @Modifying
+    @Query("DELETE FROM SessionEntity s WHERE s.userId = :userId AND s.token <> :sessionToKeep")
+    void deleteSessionsFromAUserExceptOne(@Param("userId") UUID userId, @Param("sessionToKeep") UUID sessionToKeep);
 
     @Modifying
     @Query("DELETE FROM SessionEntity s WHERE s.createdAt < :threshold")

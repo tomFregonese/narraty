@@ -24,15 +24,18 @@ public class AuthController {
     private final SignUpUseCase signUpUseCase;
     private final SignInUseCase signInUseCase;
     private final LogoutUseCase logoutUseCase;
+    private final LogoutAnyOtherSessionsUseCase logoutAnyOtherSessionsUseCase;
     private final TestSignedInUserUseCase testSignedInUserUseCase;
     private final ClearExpiredSessionsUseCase clearExpiredSessionsUseCase;
 
     @Autowired
     public AuthController(SignUpUseCase signUp, SignInUseCase signInUseCase, LogoutUseCase logoutUseCase,
+                            LogoutAnyOtherSessionsUseCase logoutAnyOtherSessionsUseCase,
                           TestSignedInUserUseCase testSignedInUserUseCase, ClearExpiredSessionsUseCase clearExpiredSessionsUseCase) {
         this.signUpUseCase = signUp;
         this.signInUseCase = signInUseCase;
         this.logoutUseCase = logoutUseCase;
+        this.logoutAnyOtherSessionsUseCase = logoutAnyOtherSessionsUseCase;
         this.testSignedInUserUseCase = testSignedInUserUseCase;
         this.clearExpiredSessionsUseCase = clearExpiredSessionsUseCase;
     }
@@ -99,6 +102,18 @@ public class AuthController {
     public ResponseEntity<Void> logout() {
         try {
             logoutUseCase.handle(null);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @PostMapping("/logout-any-other-sessions")
+    public ResponseEntity<Void> logoutAnyOtherSessions() {
+        try {
+            logoutAnyOtherSessionsUseCase.handle(null);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (Exception e) {
             e.printStackTrace();
