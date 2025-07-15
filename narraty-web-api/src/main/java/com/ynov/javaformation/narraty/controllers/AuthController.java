@@ -5,10 +5,7 @@ import com.ynov.javaformation.narraty.models.SignInCredentials;
 import com.ynov.javaformation.narraty.models.SignUpCredentials;
 import com.ynov.javaformation.narraty.models.UserCredentialsOut;
 import com.ynov.javaformation.narraty.security.Authorize;
-import com.ynov.javaformation.narraty.usecase.auth.ClearExpiredSessionsUseCase;
-import com.ynov.javaformation.narraty.usecase.auth.SignInUseCase;
-import com.ynov.javaformation.narraty.usecase.auth.SignUpUseCase;
-import com.ynov.javaformation.narraty.usecase.auth.TestSignedInUserUseCase;
+import com.ynov.javaformation.narraty.usecase.auth.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +23,16 @@ public class AuthController {
 
     private final SignUpUseCase signUpUseCase;
     private final SignInUseCase signInUseCase;
+    private final LogoutUseCase logoutUseCase;
     private final TestSignedInUserUseCase testSignedInUserUseCase;
     private final ClearExpiredSessionsUseCase clearExpiredSessionsUseCase;
 
     @Autowired
-    public AuthController(SignUpUseCase signUp, SignInUseCase signInUseCase,
+    public AuthController(SignUpUseCase signUp, SignInUseCase signInUseCase, LogoutUseCase logoutUseCase,
                           TestSignedInUserUseCase testSignedInUserUseCase, ClearExpiredSessionsUseCase clearExpiredSessionsUseCase) {
         this.signUpUseCase = signUp;
         this.signInUseCase = signInUseCase;
+        this.logoutUseCase = logoutUseCase;
         this.testSignedInUserUseCase = testSignedInUserUseCase;
         this.clearExpiredSessionsUseCase = clearExpiredSessionsUseCase;
     }
@@ -89,6 +88,18 @@ public class AuthController {
             UserCredentialsOut userCredentialsOut = testSignedInUserUseCase.handle(null);
             return ResponseEntity.status(HttpStatus.OK).body(userCredentialsOut);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @Authorize
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        try {
+            logoutUseCase.handle(null);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
