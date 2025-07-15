@@ -3,9 +3,11 @@ package com.ynov.javaformation.narraty.data.repositories;
 import com.ynov.javaformation.narraty.data.entities.SessionEntity;
 import com.ynov.javaformation.narraty.interfaces.daos.SessionDao;
 import com.ynov.javaformation.narraty.models.Session;
+import com.ynov.javaformation.narraty.validators.auth.SessionValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -29,6 +31,10 @@ public class SessionJpaRepositoryAdapter implements SessionDao {
 
     public void deleteAllByUserId(UUID userId) {
         repository.deleteAllByUserId(userId);
+    }
+
+    public void deleteExpiredSessions() {
+        repository.deleteExpiredSessions(LocalDateTime.now().minusDays(SessionValidator.getSessionExpirationDays()));
     }
 
 }
