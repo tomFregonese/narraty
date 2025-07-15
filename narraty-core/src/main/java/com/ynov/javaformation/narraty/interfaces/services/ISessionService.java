@@ -29,10 +29,11 @@ public interface ISessionService {
     void invalidateSession(UUID token);
 
     /**
-     * Deletes all sessions of a user from the database.
+     * Deletes a collection of sessions from the database.
      *
-     * @param userId The ID of the user whose sessions are to be deleted.
+     * @param user The user to invalidate the sessions.
+     * @param currentSessionId The session ID to keep active.
      */
-    void deleteAllSessionsOfAUser(UUID userId);
+    void invalidateUserSessionsExceptCurrent(User user, UUID currentSessionId);
 
 }

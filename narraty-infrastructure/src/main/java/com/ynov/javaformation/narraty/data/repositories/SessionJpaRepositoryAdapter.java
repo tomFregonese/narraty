@@ -29,8 +29,8 @@ public class SessionJpaRepositoryAdapter implements SessionDao {
 
     public void delete(UUID sessionToken) { repository.deleteById(sessionToken); }
 
-    public void deleteAllByUserId(UUID userId) {
-        repository.deleteAllByUserId(userId);
+    public void deleteSessionsFromAUserExceptOne(UUID userId, UUID sessionToKeep) {
+        repository.deleteSessionsFromAUserExceptOne(userId, sessionToKeep);
     }
 
     public void deleteExpiredSessions() {

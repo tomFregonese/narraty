@@ -16,6 +16,6 @@ public interface SessionDao {
 
     void deleteExpiredSessions();
 
-    void deleteAllByUserId(UUID userId);
+    void deleteSessionsFromAUserExceptOne(UUID userId, UUID sessionToKeep);
 
 }

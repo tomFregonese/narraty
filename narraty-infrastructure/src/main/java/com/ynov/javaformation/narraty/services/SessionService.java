@@ -53,8 +53,8 @@ public class SessionService implements ISessionService {
         sessionDao.delete(token);
     }
 
-    public void deleteAllSessionsOfAUser(UUID userId) {
-        sessionDao.deleteAllByUserId(userId);
+    public void invalidateUserSessionsExceptCurrent(User user, UUID currentSessionId) {
+        sessionDao.deleteSessionsFromAUserExceptOne(user.id, currentSessionId);
     }
 
 }
