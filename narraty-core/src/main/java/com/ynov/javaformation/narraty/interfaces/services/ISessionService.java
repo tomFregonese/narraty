@@ -26,7 +26,7 @@ public interface ISessionService {
      *
      * @param token The token of the session to delete.
      */
-    void deleteSession(UUID token);
+    void invalidateSession(UUID token);
 
     /**
      * Deletes all sessions of a user from the database.

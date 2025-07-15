@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.UUID;
 
 @Component
 public class BearerAuthenticationFilter extends OncePerRequestFilter {
@@ -38,6 +39,7 @@ public class BearerAuthenticationFilter extends OncePerRequestFilter {
                 var auth = new UsernamePasswordAuthenticationToken(
                         user, null, Collections.emptyList()
                 );
+                auth.setDetails(UUID.fromString(token));
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }

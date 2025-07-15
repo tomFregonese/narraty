@@ -49,7 +49,7 @@ public class SessionService implements ISessionService {
         }
     }
 
-    public void deleteSession(UUID token) {
+    public void invalidateSession(UUID token) {
         sessionDao.delete(token);
     }
 
