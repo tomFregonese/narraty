@@ -10,6 +10,8 @@ import com.ynov.javaformation.narraty.usecase.auth.GetAuthenticatedUserUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.IsOwnerUseCase;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UpdateTaleTitleUseCase implements IUseCase<UpdateTaleTitleDtoCore, Tale> {
 
@@ -38,6 +40,7 @@ public class UpdateTaleTitleUseCase implements IUseCase<UpdateTaleTitleDtoCore, 
         Tale tale = isOwnerUseCase.handle(owningTestDtoCore);
 
         tale.title = updateTaleTitleDtoCore.title;
+        tale.updatedAt = LocalDateTime.now();
 
         return dao.save(tale);
 
