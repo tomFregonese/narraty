@@ -7,29 +7,34 @@ import com.ynov.javaformation.narraty.exceptions.story.SceneNotFoundException;
 import com.ynov.javaformation.narraty.exceptions.story.TargetedSceneDoesNotBelongToTheSaveTaleAsTheChoice;
 import com.ynov.javaformation.narraty.interfaces.daos.ChoiceDao;
 import com.ynov.javaformation.narraty.interfaces.daos.SceneDao;
+import com.ynov.javaformation.narraty.interfaces.daos.TaleDao;
 import com.ynov.javaformation.narraty.models.Choice;
 import com.ynov.javaformation.narraty.models.Scene;
+import com.ynov.javaformation.narraty.models.Tale;
 import com.ynov.javaformation.narraty.models.User;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.GetAuthenticatedUserUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.IsOwnerUseCase;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UpdateChoiceNextSceneIdUseCase implements IUseCase<UpdateChoiceNextSceneIdDtoCore, Choice> {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
     private final IsOwnerUseCase isOwnerUseCase;
+    private final TaleDao taleDao;
     private final SceneDao sceneDao;
     private final ChoiceDao choiceDao;
 
     public UpdateChoiceNextSceneIdUseCase(
             IsOwnerUseCase isOwnerUseCase,
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
-            SceneDao sceneDao,
-            ChoiceDao choiceDao) {
+            TaleDao taleDao, SceneDao sceneDao, ChoiceDao choiceDao) {
         this.isOwnerUseCase = isOwnerUseCase;
         this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
+        this.taleDao = taleDao;
         this.sceneDao = sceneDao;
         this.choiceDao = choiceDao;
     }
@@ -51,7 +56,7 @@ public class UpdateChoiceNextSceneIdUseCase implements IUseCase<UpdateChoiceNext
                 user.id
         );
 
-        isOwnerUseCase.handle(owningTestDtoCore);
+        Tale tale = isOwnerUseCase.handle(owningTestDtoCore);
 
         Scene nextScene = sceneDao.findById(updateChoiceNextSceneIdDtoCore.nextSceneId).orElseThrow(
                 () -> new SceneNotFoundException("Scene: " + updateChoiceNextSceneIdDtoCore.nextSceneId + " not found")
@@ -64,6 +69,9 @@ public class UpdateChoiceNextSceneIdUseCase implements IUseCase<UpdateChoiceNext
         }
 
         choice.nextSceneId = updateChoiceNextSceneIdDtoCore.nextSceneId;
+
+        tale.updatedAt = LocalDateTime.now();
+        taleDao.save(tale);
 
         return choiceDao.save(choice);
 
