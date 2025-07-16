@@ -4,34 +4,40 @@ import com.ynov.javaformation.narraty.dtosCore.OwningTestDtoCore;
 import com.ynov.javaformation.narraty.dtosCore.UpdateSceneStatusDtoCore;
 import com.ynov.javaformation.narraty.exceptions.story.SceneNotFoundException;
 import com.ynov.javaformation.narraty.interfaces.daos.SceneDao;
+import com.ynov.javaformation.narraty.interfaces.daos.TaleDao;
 import com.ynov.javaformation.narraty.models.Scene;
+import com.ynov.javaformation.narraty.models.Tale;
 import com.ynov.javaformation.narraty.models.User;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.GetAuthenticatedUserUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.IsOwnerUseCase;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UpdateSceneStatusUseCase implements IUseCase<UpdateSceneStatusDtoCore, Scene> {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
     private final IsOwnerUseCase isOwnerUseCase;
-    private final SceneDao dao;
+    private final TaleDao taleDao;
+    private final SceneDao sceneDao;
 
     public UpdateSceneStatusUseCase(
             IsOwnerUseCase isOwnerUseCase,
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
-            SceneDao dao) {
+            TaleDao taleDao, SceneDao sceneDao) {
         this.isOwnerUseCase = isOwnerUseCase;
         this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
-        this.dao = dao;
+        this.taleDao = taleDao;
+        this.sceneDao = sceneDao;
     }
 
     public Scene handle(UpdateSceneStatusDtoCore updateSceneStatusDtoCore) {
 
         User user = getAuthenticatedUserUseCase.handle(null);
 
-        Scene scene = dao.findById(updateSceneStatusDtoCore.sceneId).orElseThrow(
+        Scene scene = sceneDao.findById(updateSceneStatusDtoCore.sceneId).orElseThrow(
                 () -> new SceneNotFoundException("Scene: " + updateSceneStatusDtoCore.sceneId + " not found")
         );
 
@@ -40,11 +46,14 @@ public class UpdateSceneStatusUseCase implements IUseCase<UpdateSceneStatusDtoCo
                 user.id
         );
 
-        isOwnerUseCase.handle(owningTestDtoCore);
+        Tale tale = isOwnerUseCase.handle(owningTestDtoCore);
 
         scene.status = updateSceneStatusDtoCore.status;
 
-        return dao.save(scene);
+        tale.updatedAt = LocalDateTime.now();
+        taleDao.save(tale);
+
+        return sceneDao.save(scene);
 
     }
 

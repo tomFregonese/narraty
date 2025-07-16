@@ -2,6 +2,7 @@ package com.ynov.javaformation.narraty.usecase.story;
 
 import com.ynov.javaformation.narraty.dtosCore.OwningTestDtoCore;
 import com.ynov.javaformation.narraty.interfaces.daos.SceneDao;
+import com.ynov.javaformation.narraty.interfaces.daos.TaleDao;
 import com.ynov.javaformation.narraty.models.Scene;
 import com.ynov.javaformation.narraty.models.SceneStatus;
 import com.ynov.javaformation.narraty.models.Tale;
@@ -11,6 +12,7 @@ import com.ynov.javaformation.narraty.usecase.auth.GetAuthenticatedUserUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.IsOwnerUseCase;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -18,15 +20,17 @@ public class CreateSceneUseCase implements IUseCase<UUID, Scene> {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
     private final IsOwnerUseCase isOwnerUseCase;
-    private final SceneDao dao;
+    private final TaleDao taleDao;
+    private final SceneDao sceneDao;
 
     public CreateSceneUseCase(
             IsOwnerUseCase isOwnerUseCase,
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
-            SceneDao dao) {
+            TaleDao taleDao, SceneDao sceneDao) {
         this.isOwnerUseCase = isOwnerUseCase;
         this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
-        this.dao = dao;
+        this.taleDao = taleDao;
+        this.sceneDao = sceneDao;
     }
 
     public Scene handle(UUID taleId) {
@@ -47,7 +51,10 @@ public class CreateSceneUseCase implements IUseCase<UUID, Scene> {
                 .status(SceneStatus.Default)
                 .build();
 
-        return dao.save(sceneToSave);
+        tale.updatedAt = LocalDateTime.now();
+        taleDao.save(tale);
+
+        return sceneDao.save(sceneToSave);
 
     }
 
