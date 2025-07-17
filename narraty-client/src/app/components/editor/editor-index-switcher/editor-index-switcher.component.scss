@@ -1,0 +1,28 @@
+.index-switcher-container {
+  display: flex;
+  width: 100%;
+  background-color: #191919;
+}
+
+.index-switcher-item {
+  display: flex;
+  justify-content: center;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 1.5em;
+  align-items: center;
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  border-right: 2px solid #f6f6f6;
+  border-left: none;
+  border-top: none;
+  border-bottom: none;
+  background-color: #191919;
+  color: #f6f6f6;
+  cursor: pointer;
+}
+
+.index-switcher-item .active {
+  background-color: #f6f6f6;
+  color: #191919;
+}

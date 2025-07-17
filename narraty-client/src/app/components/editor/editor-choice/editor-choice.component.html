@@ -1,0 +1,43 @@
+<div class="editor-choice">
+  <h2>Choix</h2>
+
+  <app-editor-index-switcher
+    class="editor-index-switcher"
+    [ids]="choiceIds"
+    [currentId]="currentChoice?.id || ''"
+    (select)="onChoiceSelect($event)"
+    (add)="addChoice.emit()"
+  ></app-editor-index-switcher>
+
+  <div class="editor-choice-text">
+    <textarea
+    [ngModel]="currentChoice?.text || ''"
+    (ngModelChange)="onChoiceTextChange($event)"
+    autoResize
+    rows="1"
+    class="choice-textarea"
+    [disabled]="!currentChoice"
+  ></textarea>
+  </div>
+
+  <div class="editor-choice-footer">
+    <div class="editor-choice-target-scene">
+      <p>Déplacer le joueur à la scène n°:</p>
+      <select
+      [ngModel]="currentChoice?.targetSceneId"
+      (ngModelChange)="onChoiceTargetSceneChange($event)"
+      class="choice-target-scene-dropdown"
+      [disabled]="!currentChoice"
+    >
+      <option [ngValue]="null">-- Pas de scène --</option>
+      <ng-container *ngFor="let sceneId of sceneIds; let i = index">
+        <option [ngValue]="sceneId">{{ i + 1 }}</option>
+      </ng-container>
+    </select>
+    </div>
+
+    <button class="editor-choice-delete-button" [disabled]="!currentChoice">
+      Supprimer le choix
+    </button>
+  </div>
+</div>

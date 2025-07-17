@@ -1,0 +1,77 @@
+h2 {
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 2em;
+  color: #f6f6f6;
+  margin: 0;
+}
+
+.editor-choice {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #191919;
+  gap: 1em;
+}
+
+.editor-index-switcher {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  overflow-x: auto;
+  border: 2px solid #f6f6f6;
+}
+
+.choice-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #191919;
+  font-family: "PPMondwest", sans-serif;
+  font-size: 1.5em;
+  color: #f6f6f6;
+  padding: 16px;
+  border: 2px dotted #f6f6f6;
+  resize: none;
+}
+
+.editor-choice-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  background-color: #191919;
+}
+
+.editor-choice-target-scene {
+  display: flex;
+  gap: 1em;
+  align-items: center;
+}
+
+.editor-choice-target-scene p {
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 1.5em;
+  color: #f6f6f6;
+}
+
+.choice-target-scene-dropdown {
+  background-color: #191919;
+  border: solid 2px #f6f6f6;
+  color: #f6f6f6;
+  font-family: "Pixelify Sans", sans-serif;
+  height: 48px;
+  width: 48px;
+  appearance: none;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.editor-choice-delete-button {
+  background-color: #191919;
+  border: solid 2px #f8d0d0;
+  color: #f8d0d0;
+  font-family: "Pixelify Sans", sans-serif;
+  padding: 4px 10px;
+  align-self: flex-end;
+}

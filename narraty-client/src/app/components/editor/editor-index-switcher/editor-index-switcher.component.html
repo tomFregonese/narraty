@@ -1,0 +1,14 @@
+<div class="index-switcher-container">
+  <button
+    *ngFor="let id of ids; let i = index"
+    class="index-switcher-item"
+    [class.active]="id === currentId"
+    (click)="select.emit(id)"
+  >
+    {{ i + 1 }}
+  </button>
+
+  <button class="index-switcher-item add-button" (click)="onAddClick()">
+    +
+  </button>
+</div>

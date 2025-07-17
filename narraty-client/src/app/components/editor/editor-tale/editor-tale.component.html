@@ -1,0 +1,21 @@
+<div class="modal">
+  <button class="close-button" (click)="closePopUp()">x</button>
+
+  <p class="modal-title">Titre</p>
+  <input
+    type="text"
+    [(ngModel)]="tale.title" 
+    (ngModelChange)="onTitleChange($event)"
+    placeholder="Titre de l'histoire"
+    class="tale-title-input"
+  />
+
+  <p class="modal-title">Description</p>
+  <textarea
+    rows="4"
+    [(ngModel)]="tale.description" 
+    (ngModelChange)="onDescriptionChange($event)"
+    placeholder="Description de l'histoire"
+    class="tale-description-textarea"
+  ></textarea>
+</div>

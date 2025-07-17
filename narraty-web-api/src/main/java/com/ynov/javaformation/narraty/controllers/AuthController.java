@@ -1,5 +1,6 @@
 package com.ynov.javaformation.narraty.controllers;
 
+import com.ynov.javaformation.narraty.dtos.auth.UserTokenDtoOut;
 import com.ynov.javaformation.narraty.exceptions.auth.*;
 import com.ynov.javaformation.narraty.models.SignInCredentials;
 import com.ynov.javaformation.narraty.models.SignUpCredentials;
@@ -41,19 +42,19 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<String> signUp(@RequestBody SignUpCredentials credentials) {
+    public ResponseEntity<UserTokenDtoOut> signUp(@RequestBody SignUpCredentials credentials) {
         try {
 
             UUID sessionId = signUpUseCase.handle(credentials);
-            return ResponseEntity.status(HttpStatus.CREATED).body(sessionId.toString());
+            return ResponseEntity.status(HttpStatus.CREATED).body(UserTokenDtoOut.mapToDto(sessionId));
 
         } catch (UsernameAlreadyExistException | EmailAlreadyExistsException e) {
 
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
 
         } catch (InvalidEmailException | PasswordDoesNotMeetRequirementException e) {
 
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -62,19 +63,19 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<String> signIn(@RequestBody SignInCredentials credentials) {
+    public ResponseEntity<UserTokenDtoOut> signIn(@RequestBody SignInCredentials credentials) {
         try {
 
             UUID sessionId = signInUseCase.handle(credentials);
-            return ResponseEntity.status(HttpStatus.OK).body(sessionId.toString());
+            return ResponseEntity.status(HttpStatus.OK).body(UserTokenDtoOut.mapToDto(sessionId));
 
         } catch (UserWithThisEmailNotFoundException e) {
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         } catch (InvalidPasswordException e) {
 
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         } catch (Exception e) {
             e.printStackTrace();

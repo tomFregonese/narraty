@@ -1,0 +1,19 @@
+.nav-link {
+  font-family: "Pixelify Sans";
+}
+
+.nav-title {
+  font-family: "PPMondwest", sans-serif;
+  font-size: 2rem;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+}
+
+.part-container {
+  flex: 1 1 33.33%;
+  display: flex;
+  max-width: 33.33%;
+  box-sizing: border-box;
+  align-items: flex-end;
+}

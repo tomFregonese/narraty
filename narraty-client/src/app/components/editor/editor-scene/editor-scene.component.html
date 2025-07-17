@@ -1,0 +1,35 @@
+<div class="editor-scene-container">
+    <h2>Scènes</h2>
+    <app-editor-index-switcher
+      class="editor-index-switcher"
+      [ids]="sceneIds"
+      [currentId]="currentSceneId"
+      (select)="sceneChange.emit($event)"
+      (add)="addScene.emit()"
+    />
+
+    <div class="editor-scene-text" *ngIf="scene">
+      <textarea
+      [(ngModel)]="scene.text"
+      (ngModelChange)="onTextChange($event)"
+      rows="4"
+      class="scene-textarea"
+    ></textarea>
+    </div>
+    <div class="editor-scene-footer" *ngIf="scene">
+      <select
+      id="scene-result"
+      [(ngModel)]="scene.result"
+      (ngModelChange)="onResultChange($event)"
+      class="scene-result-dropdown"
+    >
+      <option [ngValue]="0">Scène de départ</option>
+      <option [ngValue]="1">Aucune conséquence</option>
+      <option [ngValue]="2">Défaite</option>
+      <option [ngValue]="3">Victoire</option>
+    </select>
+      <button class="editor-scene-delete-button" *ngIf="sceneIds.length > 1">
+        Supprimer la scène
+      </button>
+    </div>
+  </div>

@@ -1,0 +1,28 @@
+<app-main-block> 
+  <div slot="content" class="home-page-content">
+    <div class="logo">
+      <span>L'histoire dont vous êtes le héro</span>
+    </div>
+    <div class="form-container">
+      <span id="title">Se connecter</span>
+      <form [formGroup]="login" (ngSubmit)="onSubmit()">
+        <app-form-input formControlName="email" labelFor="username" name="Email" type="text" placeholder="email@example.com"></app-form-input>
+        <div *ngIf="login.get('email')?.invalid && login.get('email')?.touched">
+          <small class="error-message" *ngIf="login.get('email')?.errors?.['required']">L'email est requis.</small>
+          <small class="error-message" *ngIf="login.get('email')?.errors?.['email']">L'email n'est pas valide.</small>
+        </div>
+
+        <app-form-input formControlName="password" labelFor="password" name="Mot de passe" type="password" placeholder="Mot de passe"></app-form-input>       
+         <div *ngIf="login.get('password')?.invalid && login.get('password')?.touched">
+          <small class="error-message" *ngIf="login.get('password')?.errors?.['required']">Le mot de passe est requis.</small>
+         </div>
+         
+        <app-form-button name="Se connecter"></app-form-button>
+        <div *ngIf="errorMessage" class="error-message">
+          {{ errorMessage }}
+        </div>
+      </form>
+      <app-link-button link="/register" name="Pas de compte ? S'enregistrer"/>
+    </div>
+  </div>
+</app-main-block> 

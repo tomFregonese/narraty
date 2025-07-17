@@ -1,0 +1,10 @@
+:host a {
+  font-size: 1.5em;
+  font-family: "PPMondwest", sans-serif;
+  color: white;
+  text-decoration: none;
+}
+
+:host a:hover {
+  text-decoration: underline;
+}

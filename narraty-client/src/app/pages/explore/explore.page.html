@@ -1,0 +1,14 @@
+<app-main-block>
+  <div slot="content" class="explore-page-content">
+    <app-navbar></app-navbar>
+
+    <div id="content">
+      <span id="title">Toutes les aventures</span>
+      <div id="list">
+        @for (story of stories; track story.id) {
+            <app-tale-card id="{{story.id}}" title="{{story.title}}"></app-tale-card>
+        }
+      </div>
+    </div>
+  </div>
+</app-main-block>

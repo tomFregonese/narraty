@@ -1,0 +1,15 @@
+
+<label [for]="labelFor">{{name}}</label>
+<div class="input-group">
+  <span>(</span>
+  <input
+    [type]="type"
+    [placeholder]="placeholder"
+    [id]="labelFor"
+    [value]="value"
+    (input)="handleInput($event)"
+    [disabled]="disabled"
+    class="form-control"
+  />
+  <span>)</span>
+</div>

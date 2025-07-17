@@ -1,0 +1,81 @@
+.edit-icon {
+  width: 20px;
+  height: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.pencil-icon {
+  width: 16px;
+  height: 16px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-link {
+  font-family: "Pixelify Sans";
+}
+
+.nav-title {
+  font-family: "PPMondwest", sans-serif;
+  font-size: 2rem;
+  text-align: center;
+  margin: 0;
+}
+
+.part-container {
+  flex: 1 1 33.33%;
+  display: flex;
+  max-width: 33.33%;
+  box-sizing: border-box;
+  align-items: flex-end;
+}
+
+#nav-title-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+#nav-buttons-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+#publish {
+  all: unset;
+  background-color: #191919;
+  border: solid 2px #dff8d0;
+  color: #dff8d0;
+  font-family: "Pixelify Sans", sans-serif;
+  padding: 4px 10px;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+#archive {
+  all: unset;
+  background-color: #191919;
+  border: solid 2px #d0eff8;
+  color: #d0eff8;
+  font-family: "Pixelify Sans", sans-serif;
+  padding: 4px 10px;
+  align-self: flex-end;
+  cursor: pointer;
+}
+
+#delete {
+  all: unset;
+  background-color: #191919;
+  border: solid 2px #f8d0d0;
+  color: #f8d0d0;
+  font-family: "Pixelify Sans", sans-serif;
+  padding: 4px 10px;
+  align-self: flex-end;
+  cursor: pointer;
+}

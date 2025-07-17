@@ -1,0 +1,39 @@
+#toolBar {
+    height: 4rem;
+    width: 100%;
+    padding-inline: 10px;
+    padding-bottom: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    border-bottom: 2px solid #f6f6f6;
+
+    .left,
+    .right {
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      gap: 12px;
+    }
+
+    .right {
+      align-items: center;
+      button {
+        background-color: #191919;
+        border: solid 2px #f8d0d0;
+        color: #f8d0d0;
+        font-family: "Pixelify Sans", sans-serif;
+        padding: 4px 10px;
+        align-self: flex-end;
+      }
+    }
+
+    .middle {
+      span {
+        font-family: "PPMondwest", sans-serif;
+        font-size: 4rem;
+        display: inline;
+      }
+    }
+  }
