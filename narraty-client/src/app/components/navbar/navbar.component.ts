@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MainBlockComponent } from '../main-block/main-block.component';
 import { LinkButtonComponent } from '../link-button/link-button.component';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../business/services/auth.service';
@@ -11,15 +10,24 @@ import { AuthService } from '../../business/services/auth.service';
   styleUrl: './navbar.component.scss'
 })
 export class NavbarComponent {
-  isConnected: boolean = false;
+    isConnected: boolean = false;
 
-  constructor(private authService: AuthService) {}
-  
-  ngOnInit() {
-    this.isConnected = this.authService.isLoggedIn();
-  }
-  logout() {
-    this.authService.logout();
-    this.isConnected = false;
-  }
+    constructor(private authService: AuthService) {}
+
+    ngOnInit() {
+        this.isConnected = this.authService.isLoggedIn();
+    }
+
+    logout() {
+        this.authService.logout().subscribe({
+            next: () => {
+                console.log("Logout successful");
+                this.isConnected = false;
+            },
+            error: (error) => {
+                console.error("Logout failed", error);
+            }
+        });
+    }
+
 }
