@@ -3,6 +3,7 @@ package com.ynov.javaformation.narraty.data.repositories;
 import com.ynov.javaformation.narraty.data.entities.TaleEntity;
 import com.ynov.javaformation.narraty.interfaces.daos.TaleDao;
 import com.ynov.javaformation.narraty.models.Tale;
+import com.ynov.javaformation.narraty.models.TaleStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +34,7 @@ public class TaleJpaRepositoryAdapter implements TaleDao {
 
     public List<Tale> findAllPublished() {
         List<TaleEntity> talesEntity = repository.findAll();
-        return talesEntity.stream().map(TaleEntity::mapToDomain).toList();
+        return talesEntity.stream().filter(t -> t.status == TaleStatus.Published).map(TaleEntity::mapToDomain).toList();
     }
 
     public void deleteById(UUID id) {

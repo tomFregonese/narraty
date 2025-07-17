@@ -5,14 +5,17 @@ import com.ynov.javaformation.narraty.exceptions.story.ChoiceNotFoundException;
 import com.ynov.javaformation.narraty.exceptions.story.SceneNotFoundException;
 import com.ynov.javaformation.narraty.interfaces.daos.ChoiceDao;
 import com.ynov.javaformation.narraty.interfaces.daos.SceneDao;
+import com.ynov.javaformation.narraty.interfaces.daos.TaleDao;
 import com.ynov.javaformation.narraty.models.Choice;
 import com.ynov.javaformation.narraty.models.Scene;
+import com.ynov.javaformation.narraty.models.Tale;
 import com.ynov.javaformation.narraty.models.User;
 import com.ynov.javaformation.narraty.usecase.IUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.GetAuthenticatedUserUseCase;
 import com.ynov.javaformation.narraty.usecase.auth.IsOwnerUseCase;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -20,16 +23,17 @@ public class DeleteChoiceUseCase implements IUseCase<UUID, Void> {
 
     private final GetAuthenticatedUserUseCase getAuthenticatedUserUseCase;
     private final IsOwnerUseCase isOwnerUseCase;
+    private final TaleDao taleDao;
     private final SceneDao sceneDao;
     private final ChoiceDao choiceDao;
 
     public DeleteChoiceUseCase(
             IsOwnerUseCase isOwnerUseCase,
             GetAuthenticatedUserUseCase getAuthenticatedUserUseCase,
-            SceneDao sceneDao,
-            ChoiceDao choiceDao) {
+            TaleDao talaDao, SceneDao sceneDao, ChoiceDao choiceDao) {
         this.isOwnerUseCase = isOwnerUseCase;
         this.getAuthenticatedUserUseCase = getAuthenticatedUserUseCase;
+        this.taleDao = talaDao;
         this.sceneDao = sceneDao;
         this.choiceDao = choiceDao;
     }
@@ -51,9 +55,12 @@ public class DeleteChoiceUseCase implements IUseCase<UUID, Void> {
                 user.id
         );
 
-        isOwnerUseCase.handle(owningTestDtoCore);
+        Tale tale = isOwnerUseCase.handle(owningTestDtoCore);
 
         choiceDao.deleteById(choiceId);
+
+        tale.updatedAt = LocalDateTime.now();
+        taleDao.save(tale);
 
         return null;
 
