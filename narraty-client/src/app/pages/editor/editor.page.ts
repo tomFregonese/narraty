@@ -56,7 +56,7 @@ export class EditorPage {
 
     constructor(private editStoryService: EditStoryService, private route: ActivatedRoute) {
         this.taleId = this.route.snapshot.paramMap.get('taleId') || '';
-        this.editStoryService.getTaleInfo(this.taleId).subscribe((tale: EditTale) => {
+        this.editStoryService.getEditTaleInfo(this.taleId).subscribe((tale: EditTale) => {
             console.log(tale);
             this.fillTaleData(tale);
         });
