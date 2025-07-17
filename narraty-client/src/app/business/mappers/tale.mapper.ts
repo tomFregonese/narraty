@@ -13,8 +13,8 @@ export class TaleMapper {
             id: taleDto.id,
             title: taleDto.ttl,
             description: taleDto.dsc,
-            createdAt: new Date(taleDto.crtAt),
-            updatedAt: new Date(taleDto.updAt),
+            createdAt: new Date(taleDto.crtdAt),
+            updatedAt: new Date(taleDto.updtAt),
             authorId: taleDto.autrId,
             playCount: taleDto.plyCnt
         };
@@ -25,8 +25,8 @@ export class TaleMapper {
             id: taleDto.id,
             title: taleDto.ttl,
             description: taleDto.dsc,
-            createdAt: new Date(taleDto.crtAt),
-            updatedAt: new Date(taleDto.updAt),
+            createdAt: new Date(taleDto.upddAt),
+            updatedAt: new Date(taleDto.crtdAt),
             authorId: taleDto.autrId,
             status: taleDto.stts,
             scenes: taleDto.scns ? taleDto.scns.map(scene => this.sceneMapper.mapEditSceneDtoInToEditScene(scene)) : [],

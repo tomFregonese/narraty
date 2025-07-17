@@ -158,7 +158,7 @@ export class EditStoryService extends StoryService {
         );
     }
 
-    getTaleInfo(taleId: string): Observable<EditTale> { // TODO : Not tested yet
+    getEditTaleInfo(taleId: string): Observable<EditTale> { // TODO : Not tested yet
         const url = `${this.editStoryApiUrl}/tale/${taleId}/info`;
         const headers = this.headers
 

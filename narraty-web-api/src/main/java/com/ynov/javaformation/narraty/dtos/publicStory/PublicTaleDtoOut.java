@@ -13,7 +13,7 @@ public class PublicTaleDtoOut {
 
     public String ttl;
 
-    public String desc;
+    public String dsc;
 
     public LocalDateTime crtdAt;
 

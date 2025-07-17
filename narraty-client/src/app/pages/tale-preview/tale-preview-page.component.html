@@ -1,0 +1,53 @@
+<app-main-block>
+  <div slot="content" class="aventures-page-content">
+
+    <app-navbar/>
+    
+    <div id="content">
+      @if(error)
+      {
+        <div id="error">
+          <span>Erreur</span>
+          <span>{{errorMessage}}</span>
+        </div>
+      }@else{
+        <div id="aventure">
+          <div id="image">
+            <img src="assets/images/selected.png" alt="selected aventure image">
+          </div>
+
+          <div id="infos">
+            <div id="title">
+              <span>{{tale?.title}}</span>
+              <!-- <span id="heart">♥</span> -->
+            </div>
+            <div id="story">
+              <p>{{tale?.description}}</p>
+            </div>
+            <div id="more">
+              <div>
+                <span>Créée le : {{tale?.createdAt | date:'shortDate'}}</span>
+                <span>Modifiée le : {{tale?.updatedAt | date:'shortDate'}}</span>
+                <span>Jouée {{tale?.playCount}} fois</span>
+
+
+              </div>
+               @if (isConnected) {
+                <div>
+                    <app-link-button link="/tale/{{tale?.id}}" name="Jouer ‣" [button]="true"></app-link-button>
+                </div>
+               }
+               @else {
+                <div>Connectez vous pour lire cette histoire</div>
+               }
+
+            </div>
+          </div>
+
+        </div>
+      }
+
+    </div>
+
+  </div>
+</app-main-block>

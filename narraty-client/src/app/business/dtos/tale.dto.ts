@@ -8,9 +8,9 @@ export interface ReadTaleDtoIn {
 
     dsc: string;
 
-    crtAt: string;
+    crtdAt: string;
 
-    updAt: string;
+    updtAt: string;
 
     autrId: string;
 
@@ -26,9 +26,9 @@ export interface EditTaleDtoIn {
 
     dsc: string;
 
-    crtAt: string;
+    crtdAt: string;
 
-    updAt: string;
+    upddAt: string;
 
     autrId: string;
 

@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { HomePage } from './pages/home/home.page';
 import { RegisterPage } from './pages/register/register.page';
 import { LoginPage } from './pages/sign-in/sign-in.page';
-import { AventuresPage } from './pages/aventures/aventures.page';
+import { TalePreviewPage } from './pages/tale-preview/tale-preview-page.component';
 import { ExplorePage } from './pages/explore/explore.page';
 import { TalePage } from './pages/tale/tale.page';
 import { EditorPage } from './pages/editor/editor.page';
@@ -31,10 +31,6 @@ export const routes: Routes = [
         component: TalePage,
     },
     {
-        path: 'aventures',
-        component: AventuresPage,
-    },
-    {
         path: 'explore',
         component: ExplorePage,
     },
@@ -43,8 +39,8 @@ export const routes: Routes = [
         component: TalesDashboardComponent,
     },
     {
-        path: 'aventures/:id',
-        component: AventuresPage,
+        path: 'tale-preview/:id',
+        component: TalePreviewPage,
     },
     {
         path: 'editor/:taleId',

@@ -30,7 +30,7 @@ public class PublicStoryController {
     }
 
     @GetMapping("/all-tales")
-    public ResponseEntity<Collection<PublicTaleDtoOut>> updateChoiceNextSceneId() {
+    public ResponseEntity<Collection<PublicTaleDtoOut>> getAllPublishedTales() {
         try {
             Collection<Tale> tales = getAllPublishedTalesUseCase.handle(null);
             Collection<PublicTaleDtoOut> talesDto = tales.stream().map(PublicTaleDtoOut::mapToDto).toList();

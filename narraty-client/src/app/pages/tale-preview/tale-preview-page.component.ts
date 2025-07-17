@@ -9,14 +9,14 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../business/services/auth.service';
 
 @Component({
-  selector: 'app-aventures',
+  selector: 'app-tale-preview',
   imports: [MainBlockComponent, LinkButtonComponent, NavbarComponent, CommonModule],
-  templateUrl: './aventures.page.html',
-  styleUrl: './aventures.page.scss'
+  templateUrl: './tale-preview-page.component.html',
+  styleUrl: './tale-preview-page.component.scss'
 })
-export class AventuresPage implements OnInit {
-  protected aventure: ReadTale | null = null;
-  protected aventureId: string = '';
+export class TalePreviewPage implements OnInit {
+  protected tale: ReadTale | null = null;
+  protected taleId: string = '';
   protected error: boolean = false;
   protected errorMessage: string = '';
   isConnected: boolean = false;
@@ -26,24 +26,19 @@ export class AventuresPage implements OnInit {
   ngOnInit() {
     this.isConnected = this.authService.isLoggedIn();
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.aventureId = id;
-      this.DisplayStoryService.getTaleById(this.aventureId).subscribe({
-        next: (tale) => {
-          this.aventure = tale;
-          console.log('Fetched aventure:', this.aventure);
-        },
-        error: (err) => {
-          this.error = true;
-          this.errorMessage = 'Erreur lors de la récupération de l\'aventure';
-          console.error('Error fetching aventure:', err);
-        }
-      });
-    } else {
-      this.error = true;
-      this.errorMessage = 'Aucune aventure trouvée';
-    }
+    this.taleId = this.route.snapshot.paramMap.get('id')!;
+
+    this.DisplayStoryService.getTaleById(this.taleId).subscribe({
+      next: (tale) => {
+        this.tale = tale;
+        console.log('Fetched tale:', this.tale);
+      },
+      error: (err) => {
+        this.error = true;
+        this.errorMessage = 'Erreur lors de la récupération de la Tale :(';
+        console.error('Error fetching aventure:', err);
+      }
+    });
   }
 
   

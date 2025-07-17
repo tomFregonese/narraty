@@ -44,13 +44,25 @@ export class AuthService extends AbstractService {
         return cookie ? cookie.trim().substring(name.length) : null;
     }
 
-    logout() { // TODO to check
-        document.cookie = 'userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; ';
+    logout() {
+        const url = `${this.authApiUrl}/logout`;
+        const headers = { Authorization: `Bearer ${this.getTokenFromCookies()}` }
+
+        return this.httpClient.post(url, {}, { headers }).pipe(
+            map(() => {
+                document.cookie = 'userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; ';
+                return ;
+            }),
+            catchError((error) => {
+                return throwError(error);
+            })
+        );
+
       }
 
-      isLoggedIn(): boolean {
+    isLoggedIn(): boolean {
         return this.getTokenFromCookies() !== null;
-      }
+    }
 
     closeAllSessions() { // TODO Implement closeAllSessions
         throw new Error('Method not implemented.');
