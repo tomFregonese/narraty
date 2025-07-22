@@ -3,6 +3,9 @@
     <app-editor-nav
       class="editor-nav"
       (openPopup)="onOpenPopup()"
+      (publishTale)="publishTale()"
+      (archiveTale)="archiveTale()"
+      (deletedTale)="deleteTale()"
       [taleTitle]="tale.title"
     />
     <app-editor-scene

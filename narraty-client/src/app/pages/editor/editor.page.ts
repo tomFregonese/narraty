@@ -10,7 +10,7 @@ import {EditTale} from '../../business/models/tale.model';
 import {EditStoryService} from '../../business/services/story.service';
 import {EditChoice} from '../../business/models/choice.model';
 import {EditScene} from '../../business/models/scene.model';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 export interface Tale {
@@ -54,7 +54,7 @@ export class EditorPage {
     protected scenes: Scene[] = [];
     protected choices: Choice[] = [];
 
-    constructor(private editStoryService: EditStoryService, private route: ActivatedRoute) {
+    constructor(private editStoryService: EditStoryService, private route: ActivatedRoute, private router: Router) {
         this.taleId = this.route.snapshot.paramMap.get('taleId') || '';
         this.editStoryService.getEditTaleInfo(this.taleId).subscribe((tale: EditTale) => {
             console.log(tale);
@@ -135,4 +135,17 @@ export class EditorPage {
         this.showPopup = false;
     }
 
+    publishTale() {
+
+    }
+
+    archiveTale() {
+
+    }
+
+    deleteTale() {
+        this.editStoryService.deleteTale(this.taleId).subscribe(() => {
+            this.router.navigate(['/tales-dashboard']);
+        });
+    }
 }

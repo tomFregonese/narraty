@@ -14,8 +14,24 @@ export class EditorNavComponent {
   @Input() taleDescription: string = '';
   @Input() taleCoverUrl: string = '';
   @Output() openPopup = new EventEmitter<void>();
+  @Output() publishTale = new EventEmitter();
+  @Output() archiveTale = new EventEmitter();
+  @Output() deletedTale = new EventEmitter();
+
 
   togglePopup() {
     this.openPopup.emit();
+  }
+
+  clickPublish() {
+    this.publishTale.emit();
+  }
+
+  clickArchive() {
+    this.archiveTale.emit();
+  }
+
+  clickDelete() {
+    this.deletedTale.emit();
   }
 }
