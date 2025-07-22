@@ -144,7 +144,7 @@ public class EditStoryController {
     }
 
     @Authorize
-    @PutMapping("/tale/{taleId}/desc")
+    @PutMapping("/tale/{taleId}/description")
     public ResponseEntity<EditTaleDtoOut> updateTaleDescription(
             @PathVariable UUID taleId,
             @RequestBody UpdateDescriptionDtoIn updatetaleDescriptionDtoIn) {
@@ -200,7 +200,7 @@ public class EditStoryController {
     }
 
     @Authorize
-    @PostMapping("/create-scene/{taleId}")
+    @PostMapping("/tale/{taleId}/create-scene")
     public ResponseEntity<EditSceneDtoOut> createScene(@PathVariable UUID taleId) {
         try {
             Scene scene = createSceneUseCase.handle(taleId);
@@ -291,7 +291,7 @@ public class EditStoryController {
     }
 
     @Authorize
-    @PostMapping("create-choice/{sceneId}")
+    @PostMapping("/scene/{sceneId}/create-choice")
     public ResponseEntity<EditChoiceDtoOut> createChoice(@PathVariable UUID sceneId) {
         try {
             Choice choice = createChoiceUseCase.handle(sceneId);

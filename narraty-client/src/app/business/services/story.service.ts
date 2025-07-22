@@ -158,7 +158,7 @@ export class EditStoryService extends StoryService {
         );
     }
 
-    getEditTaleInfo(taleId: string): Observable<EditTale> { // TODO : Not tested yet
+    getEditTaleInfo(taleId: string): Observable<EditTale> {
         const url = `${this.editStoryApiUrl}/tale/${taleId}/info`;
         const headers = this.headers
 
@@ -189,7 +189,7 @@ export class EditStoryService extends StoryService {
 
       editStoryDescription(taleId: string, newDescription: string): Observable<EditTale> {
         const url = `${this.editStoryApiUrl}/tale/${taleId}/description`;
-        const body = { description: newDescription };     
+        const body = { dsc: newDescription };
         return this.httpClient.put(url, body, { headers: this.headers }).pipe(
             map((response: any) => {
                 return this.taleMapper.mapEditTaleDtoInToEditTaleModel(response);
