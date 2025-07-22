@@ -94,9 +94,9 @@ export class PlayStoryService extends StoryService {
     constructor(httpClient: HttpClient, authService: AuthService, private sceneMapper: SceneMapper) {
         super(httpClient, authService);
     }
-     private playStoryApiUrl = `${this.backBaseUrl}/PlayStory`;
+     private playStoryApiUrl = `${this.backBaseUrl}/play-story`;
 
-    readStory(taleId: string): Observable<ReadScene> { // TODO : Not tested yet
+    readStory(taleId: string): Observable<ReadScene> {
         const url = `${this.playStoryApiUrl}/scene-to-display/${taleId}`;
         const headers = this.headers
 
@@ -111,7 +111,7 @@ export class PlayStoryService extends StoryService {
 
     }
 
-    makeAChoice(taleId: string, selectedChoiceId: string): Observable<ReadScene> { // TODO : Not tested yet
+    makeAChoice(taleId: string, selectedChoiceId: string): Observable<ReadScene> {
         const url = `${this.playStoryApiUrl}/save-user-choice/${taleId}`;
         const headers = this.headers;
         const body = { choiceId: selectedChoiceId };
