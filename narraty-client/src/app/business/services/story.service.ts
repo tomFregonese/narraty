@@ -175,7 +175,7 @@ export class EditStoryService extends StoryService {
 
     editStoryTitle(taleId: string, newTitle: string): Observable<EditTale> {
         const url = `${this.editStoryApiUrl}/tale/${taleId}/title`;
-        const body = { title: newTitle };
+        const body = { ttl: newTitle };
       
         return this.httpClient.put(url, body, { headers: this.headers }).pipe(
           map((response: any) => {
